@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Code Review</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* basic style */
+    body {
+      font-family: Helvetica;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+      color: green;
+    }
+
+    h3 {
+      font-size: 16px;
+      padding-left: 5px;
+      margin-bottom: 5px;
+    }
+
+    p {
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    pre {
+      margin: 0
+    }
+
+    code {
+      border: 1px solid #999;
+      display: block;
+      white-space: pre-wrap;
+    }
+
+    /* links in headlines */
+    h3.lines-headline>a {
+      color: #005bbb;
+      text-decoration: none;
+    }
+
+    h3.lines-headline>a:hover {
+      text-decoration: underline;
+    }
+
+    /* table style */
+    table.review-table {
+      font-size: 14px;
+      padding-left: 10px;
+    }
+
+    table.review-table .caption {
+      font-weight: bold;
+      vertical-align: top;
+    }
+
+    table.review-table tr>td:first-child {
+      width: 120px
+    }
+
+    /* priority indicator */
+    .text>span:before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      margin-left: -15px;
+    }
+
+    .text>span.prio-high:before {
+      background: #FF4500;
+    }
+
+    .text>span.prio-medium:before {
+      background: #FFD700;
+    }
+
+    .text>span.prio-low:before {
+      background: #9ACD32;
+    }
+
+    .text>span.prio-none:before {
+      background: #D3D3D3;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="main-headline">Code Review Results</h1>
+  <section class="file-section">
+    <h2 class="file-section-headline">\API\IBSApplicationExercise1\Controllers\DepartmentAssignmentsController.cs</h2>
+    <h3 class="lines-headline">
+      <a href="">Position: 11:1-11:1</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-2">2</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Add regions</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Best Practices</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>Add regions to your c# files. Use #region &lt;regionName&gt; and #endregion to do this. Typically for a controller you will want 
+ - init (initialize)
+ - get
+ - post
+ - put
+ - delete
+ - helper methods
+
+Just be careful regions are a good way to split up a class and make it readable, but if you end up with a large file with a ton of regions you may have a case where you need multiple files.</p>
+        </td>
+      </tr>
+      <tr class="row-additional">
+        <td class="caption">Additional Info</td>
+        <td class="text">https://www.c-sharpcorner.com/article/using-regions-to-improve-code-readability/</td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+    <h3 class="lines-headline">
+      <a href="">Position: 25:19-25:19</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-2">2</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Add documentation</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Best Practices</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>Add documentation to your class and methods please. If you type &quot;///&quot; above the method it will create a structure like this: 
+
+        /// &lt;summary&gt;
+        /// Returns true if assign exists with given empId and deptId
+        /// &lt;/summary&gt;
+        /// &lt;param name&#x3D;&quot;empId&quot;&gt; Unique identifer for an employee&lt;/param&gt;
+        /// &lt;param name&#x3D;&quot;deptId&quot;&gt; Unique identifier for a department&lt;/param&gt;
+        /// &lt;returns&gt;&lt;/returns&gt;
+        // GET: api/Assigns/Check/assignData
+
+If the parameters are very clear and you dont have a description for them remove the &lt;param&gt; line(s) to keep it looking clean. </p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+    <h3 class="lines-headline">
+      <a href="">Position: 29:21-29:21</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-2">2</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Will return empty list</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Error Handling</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>Good job on adding some error handling, but if your DB is empty this will return an empty list so you could handle that case as well. </p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+    <h3 class="lines-headline">
+      <a href="">Position: 36:49-36:49</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-3">3</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Return types and parameters</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Code-Style</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>We should not use our Db Entities as return types or parameters because that is exposing out database structure to anyone who consumes the service. Instead we should create &quot;Data Transfer Objects&quot; or &quot;DTO&quot;s for those purposes. </p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+    <h3 class="lines-headline">
+      <a href="">Position: 52:28-52:28</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-1">1</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Remove /5</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Other</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>I know the example you saw had /5 in this, but it should be /id or something represending what the address can be not a hardcoded example. </p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+    <h3 class="lines-headline">
+      <a href="">Position: 68:38-68:38</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-2">2</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">DbUpdateConcurrencyException</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Error Handling</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>This doesn&#x27;t look like a concurrency exception. Are you sure we should be handling this here?
+</p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+    <h3 class="lines-headline">
+      <a href="">Position: 90:106-90:106</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-0">0</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">use nameof()</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Best Practices</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>Instead of hard-coding a function name here, you can use nameof() to get the string name of a function. Then if the function name changes in a refactor, you don&#x27;t need to update the code.
+
+</p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+  </section>
+  <section class="file-section">
+    <h2 class="file-section-headline">\API\IBSApplicationExercise1\Controllers\DepartmentsController.cs</h2>
+    <h3 class="lines-headline">
+      <a href="">Position: 10:15-10:15</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-0">0</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">A few endpoints to add</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Architecture</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>Good work overall, please take the comments from the Assigns controller and apply them here. 
+There are a few endpoints you may want to add 
+- get departments with the assign data
+- check if department name is unique
+- check if department abbreviation is unique
+- check if the department has any assigns (you&#x27;d call this if someone was trying to delete a department, to confirm the assigns are gone) </p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+    <h3 class="lines-headline">
+      <a href="">Position: 95:26-95:26</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-0">0</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Good CreatedAtAction</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Best Practices</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>Good use of CreatedAtAction result!
+</p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+  </section>
+  <section class="file-section">
+    <h2 class="file-section-headline">\API\IBSApplicationExercise1\Controllers\PeopleController.cs</h2>
+    <h3 class="lines-headline">
+      <a href="">Position: 86:41-86:41</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-0">0</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Rename</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Code-Style</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>While devs will know what Post and Put are, it is typically prefered if you put Add and Update instead of Post and Put for your method/function naming.</p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+  </section>
+  <section class="file-section">
+    <h2 class="file-section-headline">\API\IBSApplicationExercise1\Class.cs</h2>
+    <h3 class="lines-headline">
+      <a href="">Position: 3:13-3:13</a>
+    </h3>
+    <table class="review-table">
+      <tr class="row-priority">
+        <td class="caption">Priority</td>
+        <td class="text">
+          <span class="prio-1">1</span>
+        </td>
+      </tr>
+      <tr class="row-title">
+        <td class="caption">Title</td>
+        <td class="text">Remove empty class</td>
+      </tr>
+      <tr class="row-category">
+        <td class="caption">Category</td>
+        <td class="text">Other</td>
+      </tr>
+      <tr class="row-description">
+        <td class="caption">Description</td>
+        <td class="text">
+          <p>Remove empty class</p>
+        </td>
+      </tr>
+      <tr class="row-sha">
+        <td class="caption">SHA</td>
+        <td class="text">387ad2dc2ebf3f9984b41e003a8f0054b15e97a2</td>
+      </tr>
+    </table>
+  </section>
+</body>
+
+</html>
