@@ -1,32 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PeopleService } from 'src/app/people.service';
+import { People } from 'src/app/shared/models/people.model';
 
 @Component({
   templateUrl: 'people.component.html',
 })
 
 export class PeopleComponent {
-  employee: any;
-  colCountByScreen: object;
+  constructor(private peopleService:PeopleService) {}
 
-  constructor() {
-    this.employee = {
-      ID: 7,
-      FirstName: 'Sandra',
-      LastName: 'Johnson',
-      Prefix: 'Mrs.',
-      Position: 'Controller',
-      Picture: 'images/employees/06.png',
-      BirthDate: new Date('1974/11/5'),
-      HireDate: new Date('2005/05/11'),
-      /* tslint:disable-next-line:max-line-length */
-      Notes: 'Sandra is a CPA and has been our controller since 2008. She loves to interact with staff so if you`ve not met her, be certain to say hi.\r\n\r\nSandra has 2 daughters both of whom are accomplished gymnasts.',
-      Address: '4600 N Virginia Rd.'
-    };
-    this.colCountByScreen = {
-      xs: 1,
-      sm: 2,
-      md: 3,
-      lg: 4
-    };
+  people: People[] = [];
+
+  ngOnInit(): void {
+    this.getPeople();
   }
+
+  getPeople(): void {
+    this.peopleService.getPeople()
+    .subscribe(people => this.people = people);
+  }
+  
 }

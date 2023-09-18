@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\IBSApplicationExercise1",
+    "\\IBSApplicationExercise1\\Controllers",
+    "\\IBSApplicationExercise1\\Models"
   ],
-  "SelectedNode": "\\API",
+  "SelectedNode": "\\IBSApplicationExercise1\\Models\\People.cs",
   "PreviewInSolutionExplorer": false
 }

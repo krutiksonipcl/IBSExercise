@@ -11268,11 +11268,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\PCL.Dev\\IBSApplication\\IBSApplicationExercise1\\IBSApplicationExercise1.csproj",
+      "projectUniqueName": "C:\\PCL.Dev\\IBSApplication\\API\\IBSApplicationExercise1\\IBSApplicationExercise1.csproj",
       "projectName": "IBSApplicationExercise1",
-      "projectPath": "C:\\PCL.Dev\\IBSApplication\\IBSApplicationExercise1\\IBSApplicationExercise1.csproj",
+      "projectPath": "C:\\PCL.Dev\\IBSApplication\\API\\IBSApplicationExercise1\\IBSApplicationExercise1.csproj",
       "packagesPath": "C:\\Users\\krutiksoni\\.nuget\\packages\\",
-      "outputPath": "C:\\PCL.Dev\\IBSApplication\\IBSApplicationExercise1\\obj\\",
+      "outputPath": "C:\\PCL.Dev\\IBSApplication\\API\\IBSApplicationExercise1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 23.1\\Components\\Offline Packages",

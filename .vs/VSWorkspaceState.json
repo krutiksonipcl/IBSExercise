@@ -1,11 +1,13 @@
 {
   "ExpandedNodes": [
     "",
+    "\\API",
     "\\CLIENT",
     "\\CLIENT\\IBSApplicationClient",
     "\\CLIENT\\IBSApplicationClient\\src",
     "\\CLIENT\\IBSApplicationClient\\src\\app",
     "\\CLIENT\\IBSApplicationClient\\src\\app\\pages"
   ],
+  "SelectedNode": "\\API\\IBSApplicationExercise1.sln",
   "PreviewInSolutionExplorer": false
 }

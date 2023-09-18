@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'
 
 import { AppComponent } from './app.component';
 import { SideNavOuterToolbarModule, SideNavInnerToolbarModule, SingleCardModule } from './layouts';
@@ -24,6 +25,8 @@ import { AppRoutingModule } from './app-routing.module';
     LoginFormModule,
     UnauthenticatedContentModule,
     AppRoutingModule,
+    BrowserModule,
+    HttpClientModule,
   ],
   providers: [
     AuthService,
