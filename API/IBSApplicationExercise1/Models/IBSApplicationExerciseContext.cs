@@ -8,6 +8,10 @@ namespace IBSApplicationExercise1.Models;
 
 public partial class IBSApplicationExerciseContext : DbContext
 {
+    public IBSApplicationExerciseContext()
+    {
+    }
+
     public IBSApplicationExerciseContext(DbContextOptions<IBSApplicationExerciseContext> options)
         : base(options)
     {
@@ -18,6 +22,9 @@ public partial class IBSApplicationExerciseContext : DbContext
     public virtual DbSet<DepartmentAssignment> DepartmentAssignment { get; set; }
 
     public virtual DbSet<People> People { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer("Data Source=29J46158\\SQLEXPRESS03;Initial Catalog=IBSApplicationExercise;Integrated Security=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -64,11 +71,6 @@ public partial class IBSApplicationExerciseContext : DbContext
             entity.Property(e => e.AssignmentId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("assignmentID");
-            entity.Property(e => e.AbbrDepartmentNameAssignment)
-                .IsRequired()
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("abbrDepartmentNameAssignment");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false)

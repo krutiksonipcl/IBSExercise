@@ -25,8 +25,6 @@ public partial class DepartmentAssignment
 
     public DateTime ModifiedDate { get; set; }
 
-    public string AbbrDepartmentNameAssignment { get; set; }
-
     public virtual Department Department { get; set; }
 
     public virtual People People { get; set; }
