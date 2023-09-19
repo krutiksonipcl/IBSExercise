@@ -1,5 +1,5 @@
 
-export class People implements Deserializable{
+export class People{
     id: any;
     firstName!: string;
     lastName!: string;
