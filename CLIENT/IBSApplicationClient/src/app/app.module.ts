@@ -10,11 +10,16 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { DxDataGridModule } from 'devextreme-angular';
-
+import { DepartmentComponent } from './pages/department/department.component';
+import { HomeComponent } from './pages/home/home.component';
+import { PeopleComponent } from './pages/people/people.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DepartmentComponent,
+    PeopleComponent,
+    HomeComponent
   ],
   imports: [
   
@@ -38,6 +43,12 @@ import { DxDataGridModule } from 'devextreme-angular';
     ScreenService,
     AppInfoService
   ],
+  exports: [
+    DepartmentComponent,
+    PeopleComponent,
+    HomeComponent
+  ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

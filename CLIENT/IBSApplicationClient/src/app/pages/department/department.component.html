@@ -7,7 +7,7 @@
   <dxi-column dataField="departmentName"></dxi-column>
   <dxi-column dataField="abbrDepartmentName"></dxi-column>
 </dx-data-grid>
-<div id="updateDepartment" *NgIf="departmentGrid.selectedRowKeys.length">
+<div id="updateDepartment" *ngIf="departmentGrid.selectedRowKeys.length">
   <p class="departmentInfo">{{
     departmentGrid.instance.getSelectedRowsData()[0].Notes
   }} </p>
