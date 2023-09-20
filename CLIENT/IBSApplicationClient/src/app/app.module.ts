@@ -9,6 +9,7 @@ import { AuthService, ScreenService, AppInfoService } from './shared/services';
 import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
+import { DxDataGridModule } from 'devextreme-angular';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { CommonModule } from '@angular/common';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+  
     SideNavOuterToolbarModule,
     SideNavInnerToolbarModule,
     SingleCardModule,
@@ -27,9 +28,10 @@ import { CommonModule } from '@angular/common';
     LoginFormModule,
     UnauthenticatedContentModule,
     AppRoutingModule,
-    BrowserModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    DxDataGridModule,
+    BrowserModule,
   ],
   providers: [
     AuthService,

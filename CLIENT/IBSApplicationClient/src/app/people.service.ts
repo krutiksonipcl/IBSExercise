@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { catchError, map, tap } from 'rxjs/operators';
 
 import { People } from '../app/shared/models/people.model'
 @Injectable ({
@@ -16,11 +15,11 @@ export class PeopleService {
 
     peopleData: People=new People();
     //this is the root url in the swagger api used to make http calls for the people model
-    PeopleUrl:string= 'https://localhost:7022/api/People'
+    peopleUrl:string= 'https://localhost:7022/api/People'
     
     // send all data to be displayed in the DevExpress grid
     getPeople() : Observable<People[]> {
-        return this.myhttp.get<People[]>(this.PeopleUrl);
+        return this.myhttp.get<People[]>(this.peopleUrl);
     }
 
     // send person specific data to be displayed

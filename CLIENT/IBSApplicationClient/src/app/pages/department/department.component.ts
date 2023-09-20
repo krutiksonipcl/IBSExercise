@@ -1,38 +1,25 @@
-import { Component } from '@angular/core';
-import 'devextreme/data/odata/store';
+import { Component, OnInit } from '@angular/core';
+import { DepartmentService } from 'src/app/department.service';
+import { Department } from 'src/app/shared/models/department.model';
 
 @Component({
   templateUrl: 'department.component.html'
 })
 
 export class DepartmentComponent {
-  dataSource: any;
-  priority: any[];
+  constructor(private departmentService:DepartmentService) {}
 
-  constructor() {
-    this.dataSource = {
-      store: {
-        type: 'odata',
-        key: 'Task_ID',
-        url: 'https://js.devexpress.com/Demos/DevAV/odata/Tasks'
-      },
-      expand: 'ResponsibleEmployee',
-      select: [
-        'Task_ID',
-        'Task_Subject',
-        'Task_Start_Date',
-        'Task_Due_Date',
-        'Task_Status',
-        'Task_Priority',
-        'Task_Completion',
-        'ResponsibleEmployee/Employee_Full_Name'
-      ]
-    };
-    this.priority = [
-      { name: 'High', value: 4 },
-      { name: 'Urgent', value: 3 },
-      { name: 'Normal', value: 2 },
-      { name: 'Low', value: 1 }
-    ];
+  department: Department[] = [];
+
+  ngOnInit(): void {
+    this.getPeople();
+  }
+
+  getPeople(): void {
+    this.departmentService.getDepartment()
+    .subscribe(department => {
+      this.department = department;
+      console.log(this.department)}
+    );
   }
 }
