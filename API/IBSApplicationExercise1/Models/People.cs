@@ -3,36 +3,31 @@
 using System;
 using System.Collections.Generic;
 
-namespace IBSApplicationExercise1.Models;
-
-public partial class People
+namespace IBSApplicationExercise1.Models
 {
-    public Guid PeopleId { get; set; }
+    public partial class People
+    {
+        public People()
+        {
+            DepartmentAssignment = new HashSet<DepartmentAssignment>();
+        }
 
-    public string Email { get; set; }
+        public Guid PeopleId { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+        /// <summary>
+        /// 1=active, 0=inactive
+        /// </summary>
+        public bool? Active { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
-    public string FirstName { get; set; }
-
-    public string LastName { get; set; }
-
-    public string PhoneNumber { get; set; }
-
-    /// <summary>
-    /// 1=active, 0=inactive
-    /// </summary>
-    public bool? Active { get; set; }
-
-    public DateTime? StartDate { get; set; }
-
-    public DateTime? EndDate { get; set; }
-
-    public string CreatedBy { get; set; }
-
-    public DateTime CreatedDate { get; set; }
-
-    public string ModifiedBy { get; set; }
-
-    public DateTime ModifiedDate { get; set; }
-
-    public virtual ICollection<DepartmentAssignment> DepartmentAssignment { get; set; } = new List<DepartmentAssignment>();
+        public virtual ICollection<DepartmentAssignment> DepartmentAssignment { get; set; }
+    }
 }

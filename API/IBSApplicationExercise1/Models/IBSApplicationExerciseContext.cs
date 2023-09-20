@@ -3,170 +3,202 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace IBSApplicationExercise1.Models;
-
-public partial class IBSApplicationExerciseContext : DbContext
+namespace IBSApplicationExercise1.Models
 {
-    public IBSApplicationExerciseContext()
+    public partial class IBSApplicationExerciseContext : DbContext
     {
-    }
-
-    public IBSApplicationExerciseContext(DbContextOptions<IBSApplicationExerciseContext> options)
-        : base(options)
-    {
-    }
-
-    public virtual DbSet<Department> Department { get; set; }
-
-    public virtual DbSet<DepartmentAssignment> DepartmentAssignment { get; set; }
-
-    public virtual DbSet<People> People { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=29J46158\\SQLEXPRESS03;Initial Catalog=IBSApplicationExercise;Integrated Security=True");
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Department>(entity =>
+        public IBSApplicationExerciseContext()
         {
-            entity.HasKey(e => e.DepartmentId).HasName("PK_Department_1");
+        }
 
-            entity.HasIndex(e => new { e.DepartmentName, e.AbbrDepartmentName }, "uqDepartmentNames").IsUnique();
-
-            entity.Property(e => e.DepartmentId)
-                .HasDefaultValueSql("(newid())")
-                .HasColumnName("departmentID");
-            entity.Property(e => e.AbbrDepartmentName)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("abbrDepartmentName");
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("createdBy");
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("createdDate");
-            entity.Property(e => e.DepartmentName)
-                .IsRequired()
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("departmentName");
-            entity.Property(e => e.ModifiedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("modifiedBy");
-            entity.Property(e => e.ModifiedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("modifiedDate");
-        });
-
-        modelBuilder.Entity<DepartmentAssignment>(entity =>
+        public IBSApplicationExerciseContext(DbContextOptions<IBSApplicationExerciseContext> options)
+            : base(options)
         {
-            entity.HasKey(e => e.AssignmentId).HasName("PK_DepartmentAssignment_1");
+        }
 
-            entity.Property(e => e.AssignmentId)
-                .HasDefaultValueSql("(newid())")
-                .HasColumnName("assignmentID");
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("createdBy");
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("createdDate");
-            entity.Property(e => e.DepartmentId).HasColumnName("departmentID");
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("firstName");
-            entity.Property(e => e.LastName)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("lastName");
-            entity.Property(e => e.ModifiedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("modifiedBy");
-            entity.Property(e => e.ModifiedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("modifiedDate");
-            entity.Property(e => e.PeopleId).HasColumnName("peopleID");
+        public virtual DbSet<Department> Department { get; set; }
+        public virtual DbSet<DepartmentAssignment> DepartmentAssignment { get; set; }
+        public virtual DbSet<People> People { get; set; }
 
-            entity.HasOne(d => d.Department).WithMany(p => p.DepartmentAssignment)
-                .HasForeignKey(d => d.DepartmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DepartmentAssignment_Department1");
-
-            entity.HasOne(d => d.People).WithMany(p => p.DepartmentAssignment)
-                .HasForeignKey(d => d.PeopleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DepartmentAssignment_People");
-        });
-
-        modelBuilder.Entity<People>(entity =>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            entity.HasKey(e => e.PeopleId).HasName("PK_People_1");
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=29J46158\\SQLEXPRESS03;Initial Catalog=IBSApplicationExercise;Integrated Security=True");
+            }
+        }
 
-            entity.HasIndex(e => e.Email, "UQ__People__AB6E616436930FE2").IsUnique();
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.HasIndex(e => new { e.DepartmentName, e.AbbrDepartmentName }, "uqDepartmentNames")
+                    .IsUnique();
 
-            entity.Property(e => e.PeopleId)
-                .HasDefaultValueSql("(newid())")
-                .HasColumnName("peopleID");
-            entity.Property(e => e.Active)
-                .HasDefaultValueSql("((1))")
-                .HasComment("1=active, 0=inactive")
-                .HasColumnName("active");
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("createdBy");
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("createdDate");
-            entity.Property(e => e.Email)
-                .IsRequired()
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("email");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("datetime")
-                .HasColumnName("endDate");
-            entity.Property(e => e.FirstName)
-                .IsRequired()
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("firstName");
-            entity.Property(e => e.LastName)
-                .IsRequired()
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("lastName");
-            entity.Property(e => e.ModifiedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("modifiedBy");
-            entity.Property(e => e.ModifiedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("modifiedDate");
-            entity.Property(e => e.PhoneNumber)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("phoneNumber");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("datetime")
-                .HasColumnName("startDate");
-        });
+                entity.Property(e => e.DepartmentId)
+                    .HasColumnName("departmentID")
+                    .HasDefaultValueSql("(newid())");
 
-        OnModelCreatingPartial(modelBuilder);
+                entity.Property(e => e.AbbrDepartmentName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("abbrDepartmentName");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("createdBy");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("createdDate")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DepartmentName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("departmentName");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("modifiedBy");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("modifiedDate")
+                    .HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity<DepartmentAssignment>(entity =>
+            {
+                entity.HasKey(e => e.AssignmentId)
+                    .HasName("PK_DepartmentAssignment_1");
+
+                entity.Property(e => e.AssignmentId)
+                    .HasColumnName("assignmentID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("createdBy");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("createdDate")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DepartmentId).HasColumnName("departmentID");
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("firstName");
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("lastName");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("modifiedBy");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("modifiedDate")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PeopleId).HasColumnName("peopleID");
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.DepartmentAssignment)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DepartmentAssignment_Department1");
+
+                entity.HasOne(d => d.People)
+                    .WithMany(p => p.DepartmentAssignment)
+                    .HasForeignKey(d => d.PeopleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DepartmentAssignment_People");
+            });
+
+            modelBuilder.Entity<People>(entity =>
+            {
+                entity.HasIndex(e => e.Email, "UQ__People__AB6E616436930FE2")
+                    .IsUnique();
+
+                entity.Property(e => e.PeopleId)
+                    .HasColumnName("peopleID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Active)
+                    .HasColumnName("active")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("1=active, 0=inactive");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("createdBy");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("createdDate")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("endDate");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("firstName");
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("lastName");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("modifiedBy");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("modifiedDate")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PhoneNumber)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("phoneNumber");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("startDate");
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

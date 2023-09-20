@@ -3,23 +3,23 @@
 using System;
 using System.Collections.Generic;
 
-namespace IBSApplicationExercise1.Models;
-
-public partial class Department
+namespace IBSApplicationExercise1.Models
 {
-    public Guid DepartmentId { get; set; }
+    public partial class Department
+    {
+        public Department()
+        {
+            DepartmentAssignment = new HashSet<DepartmentAssignment>();
+        }
 
-    public string DepartmentName { get; set; }
+        public Guid DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
+        public string AbbrDepartmentName { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
-    public string AbbrDepartmentName { get; set; }
-
-    public string CreatedBy { get; set; }
-
-    public DateTime CreatedDate { get; set; }
-
-    public string ModifiedBy { get; set; }
-
-    public DateTime ModifiedDate { get; set; }
-
-    public virtual ICollection<DepartmentAssignment> DepartmentAssignment { get; set; } = new List<DepartmentAssignment>();
+        public virtual ICollection<DepartmentAssignment> DepartmentAssignment { get; set; }
+    }
 }
