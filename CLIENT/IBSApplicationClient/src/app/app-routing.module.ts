@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginFormComponent, ResetPasswordFormComponent, CreateAccountFormComponent, ChangePasswordFormComponent } from './shared/components';
 import { AuthGuardService } from './shared/services';
-import { HomeComponent } from './pages/home/home.component';
+import { departmentAssignmentComponent } from './pages/departmentAssignment/departmentAssignment.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { DepartmentComponent } from './pages/department/department.component';
 
@@ -18,8 +18,8 @@ const routes: Routes = [
     canActivate: [ AuthGuardService ]
   },
   {
-    path: 'home',
-    component: HomeComponent,
+    path: 'departmentAssignment',
+    component: departmentAssignmentComponent,
     canActivate: [ AuthGuardService ]
   },
   {
@@ -44,7 +44,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'departmentAssignment'
   }
 ];
 

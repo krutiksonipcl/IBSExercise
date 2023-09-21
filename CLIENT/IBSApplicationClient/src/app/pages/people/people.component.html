@@ -1,6 +1,20 @@
 <h2 class="content-block">People</h2>
 
-<dx-data-grid
-[dataSource]=people
->
+<dx-data-grid #peopleGrid [dataSource]=people>
+    <dxo-editing
+        [allowUpdating]="true"
+        [allowAdding]="true"
+        [allowDeleting]="true"
+        mode="row">
+    </dxo-editing>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-selection mode="single"></dxo-selection>
+    <dxi-column dataField="peopleId" [allowEditing]="false"></dxi-column>
+    <dxi-column dataField="firstName"></dxi-column>
+    <dxi-column dataField="lastName"></dxi-column>
+    <dxi-column dataField="phoneNumber"></dxi-column>
+    <dxi-column dataField="email"></dxi-column>
+    <dxi-column dataField="active"></dxi-column>
+    <dxi-column dataField="startDate" [allowEditing]="false"></dxi-column>
+    <dxi-column dataField="endDate"></dxi-column>
 </dx-data-grid>

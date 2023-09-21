@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { DxDataGridModule } from 'devextreme-angular';
 import { DepartmentComponent } from './pages/department/department.component';
-import { HomeComponent } from './pages/home/home.component';
+import { departmentAssignmentComponent } from './pages/departmentAssignment/departmentAssignment.component';
 import { PeopleComponent } from './pages/people/people.component';
 
 @NgModule({
@@ -19,7 +19,7 @@ import { PeopleComponent } from './pages/people/people.component';
     AppComponent,
     DepartmentComponent,
     PeopleComponent,
-    HomeComponent
+    departmentAssignmentComponent
   ],
   imports: [
   
@@ -46,7 +46,7 @@ import { PeopleComponent } from './pages/people/people.component';
   exports: [
     DepartmentComponent,
     PeopleComponent,
-    HomeComponent
+    departmentAssignmentComponent
   ],
   
   bootstrap: [AppComponent]
