@@ -27,12 +27,9 @@ export class DepartmentComponent {
   onDepartmentSaving(event: any) {
     const change = event.changes[0];
     const updateChange = change.data
-    console.log(updateChange);
 
-    if (change) {
-      event.cancel = true;
-      event.promise = this.departmentService.processSaving(change);
-    }
+    this.departmentService.updateDepartment(change)
+    .subscribe();
   }
 
   

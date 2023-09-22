@@ -14,12 +14,30 @@ export class DepartmentService {
   departmentData: Department=new Department();
 
   changes: Change<Department>[] = [];
-  isLoading = false;
+  updateDepartmentId = ""; 
 
   departmentURL:string= 'https://localhost:7022/api/Departments'
 
+  /**
+   * 
+   * @returns returns an observable that is the response of the API GET request on the departmentURL
+   */
   getDepartment(): Observable<Department[]> {
     return this.myHttp.get<Department[]>(this.departmentURL);
   }
-  processSaving(change: Change<Department>) {}
+  /**
+   * Handles the promise sent by the onSaving method in the datagrid
+   * @param change The updated row object from Department DataGrid
+   */
+
+  
+
+  updateDepartment(change: Change<Department>) {
+    console.log(change);
+    this.updateDepartmentId = change.key.departmentId;
+    // const headers = new HttpHeaders({'Content-Type' : 'application/json' })
+    return this.myHttp.put(this.departmentURL+'/'+this.updateDepartmentId, change.key)
+
+  }
+
 }

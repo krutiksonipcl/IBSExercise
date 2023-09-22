@@ -86,6 +86,7 @@ namespace IBSApplicationExercise1.Controllers
         [HttpPut("{DepartmentID}")]
         public async Task<IActionResult> PutDepartment(Guid DepartmentID, Department department)
         {
+            Console.Write("Hello, ");
             if (DepartmentID != department.DepartmentId)
             {
                 return BadRequest();
@@ -102,7 +103,7 @@ namespace IBSApplicationExercise1.Controllers
         // POST: api/Departments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
-        /// used to add a new row into the Department table
+        /// used to update a row into the Department table
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
@@ -119,6 +120,8 @@ namespace IBSApplicationExercise1.Controllers
             return CreatedAtAction("GetDepartment", new { DepartmentID = department.DepartmentId }, department);
         }
         #endregion
+
+
 
         #region delete
         // DELETE: api/Departments/5
