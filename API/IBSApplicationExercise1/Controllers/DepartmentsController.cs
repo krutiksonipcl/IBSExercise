@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IBSApplicationExercise1.Models;
+using NuGet.Protocol;
 
 namespace IBSApplicationExercise1.Controllers
 {
@@ -84,18 +85,31 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="department"></param>
         /// <returns></returns>
         [HttpPut("{DepartmentID}")]
-        public async Task<IActionResult> PutDepartment(Guid DepartmentID, Department department)
+        public async Task<Department> PutDepartment(Guid DepartmentID, Department updatedDepartment)
         {
-            Console.Write("Hello, ");
-            if (DepartmentID != department.DepartmentId)
-            {
-                return BadRequest();
-            }
+            System.Diagnostics.Debug.WriteLine("Hello\n\n\n");
+            System.Diagnostics.Debug.WriteLine(updatedDepartment.AbbrDepartmentName);
+            System.Diagnostics.Debug.WriteLine("Hello\n\n\n");
 
-            _context.Entry(department).State = EntityState.Modified;
+            Department recordToUpdate = await (from department in _context.Department
+                                               where department.DepartmentId == updatedDepartment.DepartmentId
+                                               select department).FirstAsync();
+
+            recordToUpdate.DepartmentId = DepartmentID;
+            recordToUpdate.DepartmentName = updatedDepartment.DepartmentName ?? recordToUpdate.DepartmentName;
+            recordToUpdate.AbbrDepartmentName = updatedDepartment.AbbrDepartmentName ?? recordToUpdate.AbbrDepartmentName;
+            recordToUpdate.CreatedBy = updatedDepartment.CreatedBy ?? recordToUpdate.CreatedBy;
+            recordToUpdate.CreatedDate = recordToUpdate.CreatedDate;
+            recordToUpdate.ModifiedBy = updatedDepartment.ModifiedBy ?? recordToUpdate.ModifiedBy;
+            recordToUpdate.ModifiedDate = recordToUpdate.ModifiedDate;
+
+
+
+            _context.UpdateRange(recordToUpdate);
             await _context.SaveChangesAsync();
-            
-            return NoContent();
+            return updatedDepartment;
+            // return the object back (good practice)
+
         }
         #endregion
 
