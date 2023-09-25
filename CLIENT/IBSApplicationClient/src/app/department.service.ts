@@ -14,7 +14,7 @@ export class DepartmentService {
   departmentData: Department=new Department();
 
   changes: Change<Department>[] = [];
-  updateDepartmentId = ""; 
+  departmentIdURL = ""; 
 
   departmentURL:string= 'https://localhost:7022/api/Departments'
 
@@ -25,20 +25,46 @@ export class DepartmentService {
   getDepartment(): Observable<Department[]> {
     return this.myHttp.get<Department[]>(this.departmentURL);
   }
-  /**
-   * Handles the promise sent by the onSaving method in the datagrid
-   * @param change The updated row object from Department DataGrid
-   */
 
-  
 
-  updateDepartment(change: Change<Department>, clonedItem: any) {
-    console.log(change);
-    console.log(clonedItem);
-    this.updateDepartmentId = clonedItem.departmentId;
-    // const headers = new HttpHeaders({'Content-Type' : 'application/json' })
-    return this.myHttp.put(this.departmentURL+'/'+this.updateDepartmentId, clonedItem)
-
+/**
+ * handles the dxgrid update types, which can be 1. update 2. insert and 3. remove and passed them to the 
+ * appropriate handlers using a switch case
+ * @param change the entire change object including .data, .key and .type properties
+ * @param clonedItem specific item to be updated in the database
+ * @returns an observable 
+ */
+  saveChanges(change: Change<Department>, clonedItem: any) {
+    console.log(change.type)
+    switch (change.type) {
+      case 'update':
+        return this.updateDepartment(clonedItem);
+      case 'insert':
+        return this.updateDepartment(clonedItem);
+      case 'remove':
+        return this.deleteDepartment(clonedItem);
+    }
   }
+
+  updateDepartment(clonedItem: any) {
+    console.log("Update" + clonedItem);
+    this.departmentIdURL = clonedItem.departmentId;
+    // const headers = new HttpHeaders({'Content-Type' : 'application/json' })
+    return this.myHttp.put(this.departmentURL+'/'+this.departmentIdURL, clonedItem);
+  }
+  
+  insertDepartment(clonedItem: any){
+    console.log("Insert" + clonedItem);
+    this.departmentIdURL = clonedItem.departmentId;
+    return this.myHttp.post(this.departmentURL, clonedItem);
+  }
+
+  deleteDepartment(clonedItem: any){
+    console.log("Delete" + clonedItem);
+    this.departmentIdURL = clonedItem.departmentId;
+    return this.myHttp.delete(this.departmentURL+"/"+this.departmentIdURL);
+  }
+
+ 
 
 }

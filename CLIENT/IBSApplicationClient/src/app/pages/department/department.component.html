@@ -1,6 +1,6 @@
 <h2 class="content-block">Department</h2>
 
-<dx-data-grid #departmentGrid [dataSource]=department (onSaving)="onDepartmentSaving($event)">
+<dx-data-grid #departmentGrid [dataSource]=department (onSaving)="onDepartmentSaving($event)" (onRowInserted)="onDepartmentInserting($event)">
   <dxo-editing
         [allowUpdating]="true"
         [allowAdding]="true"
