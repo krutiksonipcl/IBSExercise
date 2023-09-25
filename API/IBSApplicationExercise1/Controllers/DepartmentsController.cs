@@ -122,16 +122,24 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="department"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Department>> PostDepartment(Department department)
+        public async Task<ActionResult<Department>> PostDepartment(DepartmentDTO newDepartment)
         {
           if (_context.Department == null)
           {
               return Problem("Entity set " + nameof(IBSApplicationExerciseContext.Department) + " is null.");
           }
-            _context.Department.Add(department);
+
+            Department recordToAdd = null;
+
+            recordToAdd.DepartmentName = newDepartment.DepartmentName;
+            recordToAdd.AbbrDepartmentName = newDepartment.AbbrDepartmentName;
+            recordToAdd.CreatedBy = "Krutik Soni";
+            recordToAdd.ModifiedBy = "Krutik Soni";
+
+            _context.Department.AddRange(recordToAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDepartment", new { DepartmentID = department.DepartmentId }, department);
+            return CreatedAtAction("GetDepartment", new { DepartmentID = newDepartment.DepartmentId }, newDepartment);
         }
         #endregion
 
