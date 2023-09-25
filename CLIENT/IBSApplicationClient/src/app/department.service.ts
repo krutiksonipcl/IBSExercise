@@ -32,11 +32,12 @@ export class DepartmentService {
 
   
 
-  updateDepartment(change: Change<Department>) {
+  updateDepartment(change: Change<Department>, clonedItem: any) {
     console.log(change);
-    this.updateDepartmentId = change.key.departmentId;
+    console.log(clonedItem);
+    this.updateDepartmentId = clonedItem.departmentId;
     // const headers = new HttpHeaders({'Content-Type' : 'application/json' })
-    return this.myHttp.put(this.departmentURL+'/'+this.updateDepartmentId, change.key)
+    return this.myHttp.put(this.departmentURL+'/'+this.updateDepartmentId, clonedItem)
 
   }
 

@@ -82,10 +82,10 @@ namespace IBSApplicationExercise1.Controllers
         /// used to add a new row into the Department table
         /// </summary>
         /// <param name="DepartmentID"></param>
-        /// <param name="department"></param>
+        /// <param name="updatedDepartment">The new department row to be inserted</param>
         /// <returns></returns>
         [HttpPut("{DepartmentID}")]
-        public async Task<Department> PutDepartment(Guid DepartmentID, Department updatedDepartment)
+        public async Task<DepartmentDTO> PutDepartment(Guid DepartmentID, DepartmentDTO updatedDepartment)
         {
             System.Diagnostics.Debug.WriteLine("Hello\n\n\n");
             System.Diagnostics.Debug.WriteLine(updatedDepartment.AbbrDepartmentName);
@@ -98,9 +98,9 @@ namespace IBSApplicationExercise1.Controllers
             recordToUpdate.DepartmentId = DepartmentID;
             recordToUpdate.DepartmentName = updatedDepartment.DepartmentName ?? recordToUpdate.DepartmentName;
             recordToUpdate.AbbrDepartmentName = updatedDepartment.AbbrDepartmentName ?? recordToUpdate.AbbrDepartmentName;
-            recordToUpdate.CreatedBy = updatedDepartment.CreatedBy ?? recordToUpdate.CreatedBy;
+            recordToUpdate.CreatedBy = "Krutik Soni";
             recordToUpdate.CreatedDate = recordToUpdate.CreatedDate;
-            recordToUpdate.ModifiedBy = updatedDepartment.ModifiedBy ?? recordToUpdate.ModifiedBy;
+            recordToUpdate.ModifiedBy = "Krutik Soni";
             recordToUpdate.ModifiedDate = recordToUpdate.ModifiedDate;
 
 

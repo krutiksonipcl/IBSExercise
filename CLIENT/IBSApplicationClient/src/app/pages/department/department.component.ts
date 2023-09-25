@@ -25,10 +25,12 @@ export class DepartmentComponent {
 
   //https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/EditStateManagement/Angular/Light/
   onDepartmentSaving(event: any) {
-    const change = event.changes[0];
-    const updateChange = change.data
+    var clonedItem = event.changes[0].key;
+    const changes = event.changes[0].data;
+    for (let key in changes){ clonedItem[key] = changes[key];};
 
-    this.departmentService.updateDepartment(change)
+    event.cancel = true;
+    this.departmentService.updateDepartment(event.changes[0].key, clonedItem)
     .subscribe();
   }
 
