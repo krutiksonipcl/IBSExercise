@@ -95,6 +95,17 @@ namespace IBSApplicationExercise1.Models
 
                 entity.Property(e => e.DepartmentId).HasColumnName("departmentID");
 
+                entity.Property(e => e.DepartmentName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("departmentName");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("email");
+
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
                     .IsUnicode(false)

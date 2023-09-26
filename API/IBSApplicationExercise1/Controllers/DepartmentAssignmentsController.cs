@@ -102,16 +102,34 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="departmentAssignment"> the data from the front end to be set into the DepartmentAssignment table</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<DepartmentAssignment>> PostDepartmentAssignment(DepartmentAssignment departmentAssignment)
+        public async Task<ActionResult<DepartmentAssignment>> PostDepartmentAssignment(DepartmentAssignment newDepartmentAssignment)
         {
-          if (_context.DepartmentAssignment == null)
-          {
-              return Problem("Entity set " + nameof(IBSApplicationExerciseContext.DepartmentAssignment)+ " is null.");
-          }
-            _context.DepartmentAssignment.Add(departmentAssignment);
+            if (_context.DepartmentAssignment == null)
+            {
+                return Problem("Entity set " + nameof(IBSApplicationExerciseContext.DepartmentAssignment)+ " is null.");
+            }
+
+
+            var department = await _context.Department.FindAsync(new Guid(newDepartmentAssignment.DepartmentName));
+            var people = await _context.People.FindAsync(new Guid(newDepartmentAssignment.Email));
+
+            var addDepartmentAssignment = new DepartmentAssignment()
+            {
+                DepartmentId = department.DepartmentId,
+                PeopleId = people.PeopleId,
+                DepartmentName = department.DepartmentName,
+                FirstName = people.FirstName,
+                LastName = people.LastName,
+                Email = people.Email,
+                CreatedBy = "Krutik Soni",
+                ModifiedBy = "Krutik Soni"
+            };
+
+
+            _context.DepartmentAssignment.Add(addDepartmentAssignment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDepartmentAssignment", new { AssignmentID = departmentAssignment.AssignmentId }, departmentAssignment);
+            return CreatedAtAction("GetDepartmentAssignment", new { AssignmentID = newDepartmentAssignment.AssignmentId }, newDepartmentAssignment);
         }
         #endregion
 
