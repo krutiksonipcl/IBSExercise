@@ -87,10 +87,6 @@ namespace IBSApplicationExercise1.Controllers
         [HttpPut("{DepartmentID}")]
         public async Task<DepartmentDTO> PutDepartment(Guid DepartmentID, DepartmentDTO updatedDepartment)
         {
-            System.Diagnostics.Debug.WriteLine("Hello\n\n\n");
-            System.Diagnostics.Debug.WriteLine(updatedDepartment.AbbrDepartmentName);
-            System.Diagnostics.Debug.WriteLine("Hello\n\n\n");
-
             Department recordToUpdate = await (from department in _context.Department
                                                where department.DepartmentId == updatedDepartment.DepartmentId
                                                select department).FirstAsync();
@@ -123,23 +119,28 @@ namespace IBSApplicationExercise1.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Department>> PostDepartment(DepartmentDTO newDepartment)
-        {
-          if (_context.Department == null)
-          {
-              return Problem("Entity set " + nameof(IBSApplicationExerciseContext.Department) + " is null.");
-          }
+        { 
+            if (_context.Department == null)
+            {
+                return Problem("Entity set " + nameof(IBSApplicationExerciseContext.Department) + " is null.");
+            }
 
-            Department recordToAdd = null;
+            var addDepartment = new Department()
+            {
+                DepartmentName = newDepartment.DepartmentName,
+                AbbrDepartmentName = newDepartment.AbbrDepartmentName,
+                CreatedBy = "Krutik Soni",
+                ModifiedBy = "Krutik Soni"
+            };
 
-            recordToAdd.DepartmentName = newDepartment.DepartmentName;
+            /*recordToAdd.DepartmentName = newDepartment.DepartmentName;
             recordToAdd.AbbrDepartmentName = newDepartment.AbbrDepartmentName;
             recordToAdd.CreatedBy = "Krutik Soni";
-            recordToAdd.ModifiedBy = "Krutik Soni";
-
-            _context.Department.AddRange(recordToAdd);
+            recordToAdd.ModifiedBy = "Krutik Soni";*/
+            _context.Department.Add(addDepartment);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDepartment", new { DepartmentID = newDepartment.DepartmentId }, newDepartment);
+            return CreatedAtAction(nameof(GetDepartment), new { DepartmentID = newDepartment.DepartmentId }, newDepartment);
+            
         }
         #endregion
 

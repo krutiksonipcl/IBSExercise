@@ -53,10 +53,10 @@ export class DepartmentService {
     return this.myHttp.put(this.departmentURL+'/'+this.departmentIdURL, clonedItem);
   }
   
-  insertDepartment(clonedItem: any){
+  insertDepartment(clonedItem: any): Observable<Department[]> {
     console.log("Insert" + clonedItem);
     this.departmentIdURL = clonedItem.departmentId;
-    return this.myHttp.post(this.departmentURL, clonedItem);
+    return this.myHttp.post<Department[]>(this.departmentURL, clonedItem)
   }
 
   deleteDepartment(clonedItem: any){

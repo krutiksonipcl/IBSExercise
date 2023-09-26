@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { DxDataGridComponent } from "devextreme-angular";
 import { DepartmentService } from 'src/app/department.service';
 import { Department } from 'src/app/shared/models/department.model';
 
@@ -9,7 +10,6 @@ import { Department } from 'src/app/shared/models/department.model';
 
 export class DepartmentComponent {
   constructor(private departmentService:DepartmentService) {}
-
   department: Department[] = [];
   ngOnInit(): void {
     this.getPeople();
@@ -22,7 +22,6 @@ export class DepartmentComponent {
       console.log(this.department)}
     );
   }
-
   //https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/EditStateManagement/Angular/Light/
   onDepartmentSaving(event: any) {
     console.log(event.changes[0])
@@ -31,6 +30,7 @@ export class DepartmentComponent {
     const changes = event.changes[0].data;
 
     if (event.changes[0].type == "insert") {
+      event.cancel = true;
       delete event.changes[0].data['__KEY__']
       this.departmentService.insertDepartment(changes).subscribe();
     }
