@@ -25,7 +25,7 @@ export class DepartmentComponent {
   @ViewChild(DxDataGridComponent) departmentGrid!: DxDataGridComponent;
 
   //https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/EditStateManagement/Angular/Light/
-  onDepartmentSaving(event: any) {
+  onDepartmentAssignmentSaving(event: any) {
     console.log(event.changes[0])
     event.cancel = true;
 

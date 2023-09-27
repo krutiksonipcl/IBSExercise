@@ -79,17 +79,25 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="departmentAssignment"></param>
         /// <returns></returns>
         [HttpPut("{AssignmentID}")]
-        public async Task<IActionResult> PutDepartmentAssignment(Guid AssignmentID, DepartmentAssignment departmentAssignment)
+        public async Task<DepartmentAssignmentDTO> PutDepartmentAssignment(Guid AssignmentID, DepartmentAssignmentDTO updatedDepartmentAssignment)
         {
-            if (AssignmentID != departmentAssignment.AssignmentId)
-            {
-                return BadRequest();
-            }
+            DepartmentAssignment recordToUpdate = await ( from departmentAssignment in _context.DepartmentAssignment
+                                                where departmentAssignment.AssignmentId == AssignmentID
+                                                select departmentAssignment ).FirstAsync();  
 
-            _context.Entry(departmentAssignment).State = EntityState.Modified;
+            recordToUpdate.DepartmentId = AssignmentID;
+            recordToUpdate.DepartmentName = updatedDepartmentAssignment.DepartmentName ?? recordToUpdate.DepartmentName;
+            recordToUpdate.Email = recordToUpdate.Email;
+            recordToUpdate.FirstName = recordToUpdate.FirstName;
+            recordToUpdate.LastName = recordToUpdate.LastName;
+            recordToUpdate.CreatedBy = "Krutik Soni";
+            recordToUpdate.CreatedDate = recordToUpdate.CreatedDate;
+            recordToUpdate.ModifiedBy = "Krutik Soni";
+
+            _context.UpdateRange(recordToUpdate);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return updatedDepartmentAssignment;
         }
         #endregion
 
@@ -110,8 +118,8 @@ namespace IBSApplicationExercise1.Controllers
             }
 
 
-            var department = await _context.Department.FindAsync(new Guid(newDepartmentAssignment.DepartmentName));
-            var people = await _context.People.FindAsync(new Guid(newDepartmentAssignment.Email));
+            var department = await _context.Department.FindAsync(newDepartmentAssignment.DepartmentId);
+            var people = await _context.People.FindAsync(newDepartmentAssignment.PeopleId);
 
             var addDepartmentAssignment = new DepartmentAssignment()
             {

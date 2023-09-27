@@ -1,6 +1,6 @@
 <h2 class="content-block">People</h2>
 
-<dx-data-grid #peopleGrid [dataSource]=people>
+<dx-data-grid #peopleGrid [dataSource]=people (onSaving)="onPeopleSaving($event)">
     <dxo-editing
         [allowUpdating]="true"
         [allowAdding]="true"
@@ -14,7 +14,8 @@
     <dxi-column dataField="lastName"></dxi-column>
     <dxi-column dataField="phoneNumber"></dxi-column>
     <dxi-column dataField="email"></dxi-column>
-    <dxi-column dataField="active"></dxi-column>
-    <dxi-column dataField="startDate" [allowEditing]="false"></dxi-column>
-    <dxi-column dataField="endDate"></dxi-column>
+    <dxi-column dataField="active" dataType="boolean"></dxi-column>
+    <dxi-column dataField="startDate" dataType="date">
+    </dxi-column>
+    <dxi-column dataField="endDate" dataType="date"></dxi-column>
 </dx-data-grid>

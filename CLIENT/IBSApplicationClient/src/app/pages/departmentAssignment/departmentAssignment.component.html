@@ -3,22 +3,19 @@
 <dx-data-grid #departmentAssignmentGrid [dataSource]=departmentAssignment (onSaving)="ondepartmentAssignmentSaving($event)">
   <dxo-editing
     [allowAdding]="true"
-    [allowUpdating]="true"
     [allowDeleting]="true"
   ></dxo-editing>
   <dxo-search-panel [visible]="true"></dxo-search-panel>
   <dxo-selection mode="row"></dxo-selection>
   <dxi-column dataField="assignmentId" [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="peopleId"[allowEditing]="false"></dxi-column>
-  <dxi-column dataField="departmentId"[allowEditing]="false"></dxi-column>
-  <dxi-column dataField="departmentName">
+  <dxi-column dataField="departmentId" caption="Department Name">
     <dxo-lookup 
       [dataSource]=departments
       valueExpr="departmentId"
       displayExpr="departmentName"
     ></dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="email" >
+  <dxi-column dataField="peopleId" caption="Email">
     <dxo-lookup 
       [dataSource]=people
       valueExpr="peopleId"

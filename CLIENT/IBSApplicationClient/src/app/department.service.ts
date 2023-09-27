@@ -40,7 +40,7 @@ export class DepartmentService {
       case 'update':
         return this.updateDepartment(clonedItem);
       case 'insert':
-        return this.updateDepartment(clonedItem);
+        return this.insertDepartment(clonedItem);
       case 'remove':
         return this.deleteDepartment(clonedItem);
     }

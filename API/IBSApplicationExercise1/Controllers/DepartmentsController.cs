@@ -97,7 +97,6 @@ namespace IBSApplicationExercise1.Controllers
             recordToUpdate.CreatedBy = "Krutik Soni";
             recordToUpdate.CreatedDate = recordToUpdate.CreatedDate;
             recordToUpdate.ModifiedBy = "Krutik Soni";
-            recordToUpdate.ModifiedDate = recordToUpdate.ModifiedDate;
 
 
 

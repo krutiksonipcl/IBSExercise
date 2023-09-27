@@ -53,12 +53,22 @@ export class departmentAssignmentComponent {
     const changes = event.changes[0].data;
 
     event.cancel = true;
-    delete event.changes[0].data['__KEY__'];
-    
-    this.departmentAssignmentService.insertDepartmentAssignment(changes).subscribe(departmentAssignment =>{
-      this.departmentAssignment = departmentAssignment;
-      console.log(this.departmentAssignment)
-    })
+    if (event.changes[0].type == "insert"){
+
+      delete event.changes[0].data['__KEY__'];
+
+      this.departmentAssignmentService.insertDepartmentAssignment(changes)
+      .subscribe(departmentAssignment =>{
+        this.departmentAssignment = departmentAssignment;
+        console.log(this.departmentAssignment)
+      })
+    }
+    else{
+      for (let key in changes){ clonedItem[key] = changes[key];};
+      this.departmentAssignmentService.saveChanges(event.changes[0], clonedItem)
+      .subscribe()
+    }
+
   }
 }
 

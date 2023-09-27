@@ -113,19 +113,30 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="people"> the data from the front end to be set into the DepartmentAssignment table</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<People>> PostPeople(People people)
+        public async Task<ActionResult<People>> PostPeople(People newPerson)
         {
-          if (_context.People == null)
-          {
-              return Problem("Entity set " + nameof(IBSApplicationExerciseContext.People) + " is null.");
-          }
-            _context.People.Add(people);
+            if (_context.People == null)
+            {
+                return Problem("Entity set " + nameof(IBSApplicationExerciseContext.People) + " is null.");
+            }
+            var addPerson = new People()
+            {
+                FirstName = newPerson.FirstName,
+                LastName = newPerson.LastName,
+                Email = newPerson.Email,
+                PhoneNumber = newPerson.PhoneNumber,
+                StartDate = newPerson.StartDate,
+                EndDate = newPerson.EndDate,
+                CreatedBy = "Krutik Soni",
+                ModifiedBy = "Krutik Soni"
+            };
+            _context.People.Add(addPerson);
             await _context.SaveChangesAsync();
 
             // return 201 status if successful and creates a new resource in the server
             // adds location header to specify the URI of the new item
             // references GetPeople 
-            return CreatedAtAction(nameof(GetPeople), new { PeopleID = people.PeopleId }, people);
+            return CreatedAtAction(nameof(GetPeople), new { PeopleID = newPerson.PeopleId }, newPerson);
         }
         #endregion
 
