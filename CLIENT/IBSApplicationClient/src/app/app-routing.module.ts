@@ -5,11 +5,17 @@ import { AuthGuardService } from './shared/services';
 import { departmentAssignmentComponent } from './pages/departmentAssignment/departmentAssignment.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { DepartmentComponent } from './pages/department/department.component';
+import { ReportingComponent } from './pages/reporting/reporting.component';
 
 const routes: Routes = [
   {
     path: 'department',
     component: DepartmentComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'reporting',
+    component: ReportingComponent,
     canActivate: [ AuthGuardService ]
   },
   {

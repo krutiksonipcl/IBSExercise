@@ -13,12 +13,14 @@ import { DxDataGridModule, DxLoadPanelModule } from 'devextreme-angular';
 import { DepartmentComponent } from './pages/department/department.component';
 import { departmentAssignmentComponent } from './pages/departmentAssignment/departmentAssignment.component';
 import { PeopleComponent } from './pages/people/people.component';
+import { ReportingComponent } from './pages/reporting/reporting.component';
 @NgModule({
   declarations: [
     AppComponent,
     DepartmentComponent,
     PeopleComponent,
-    departmentAssignmentComponent
+    departmentAssignmentComponent,
+    ReportingComponent
   ],
   imports: [
   
@@ -36,6 +38,7 @@ import { PeopleComponent } from './pages/people/people.component';
     CommonModule,
     DxDataGridModule,
     BrowserModule,
+    
   ],
   providers: [
     AuthService,
@@ -43,6 +46,7 @@ import { PeopleComponent } from './pages/people/people.component';
     AppInfoService
   ],
   exports: [
+    ReportingComponent,
     DepartmentComponent,
     PeopleComponent,
     departmentAssignmentComponent

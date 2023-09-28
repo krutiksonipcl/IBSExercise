@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable, lastValueFrom, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Change } from './shared/models/change.model'
 
@@ -38,7 +38,7 @@ export class PeopleService {
           return this.deletePerson(clonedItem);
       }
     }
-    
+
     //update a specific person's data
     updatePerson(clonedItem: any) {
       console.log("Update" + clonedItem);
@@ -58,7 +58,9 @@ export class PeopleService {
       return this.myhttp.delete(this.peopleUrl + "/" + this.peopleIdURL, clonedItem);
     }
 
-
+    // emailCheck(params: any) {
+    //   // return this.myhttp.post(this.peopleUrl, params);
+    // }
 
 
 }

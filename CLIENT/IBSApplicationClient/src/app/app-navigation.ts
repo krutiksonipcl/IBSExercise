@@ -1,5 +1,10 @@
 export const navigation = [
   {
+    text: 'Reporting',
+    path: '/reporting',
+    icon: 'home'
+  },
+  {
     text: 'DepartmentAssignment',
     path: '/departmentAssignment',
     icon: 'home'

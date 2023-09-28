@@ -10,10 +10,22 @@
     <dxo-search-panel [visible]="true"></dxo-search-panel>
     <dxo-selection mode="single"></dxo-selection>
     <dxi-column dataField="peopleId" [allowEditing]="false"></dxi-column>
-    <dxi-column dataField="firstName"></dxi-column>
-    <dxi-column dataField="lastName"></dxi-column>
-    <dxi-column dataField="phoneNumber"></dxi-column>
-    <dxi-column dataField="email"></dxi-column>
+    <dxi-column dataField="firstName">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="lastName">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="phoneNumber"></dxi-column>  
+    <dxi-column dataField="email">        
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+        <dxi-validation-rule type="email"></dxi-validation-rule>
+        <!-- <dxi-validation-rule
+            type="async"
+            message="Email address is not unique"
+            [validationCallback]="asyncValidation">
+        </dxi-validation-rule> -->
+    </dxi-column>
     <dxi-column dataField="active" dataType="boolean"></dxi-column>
     <dxi-column dataField="startDate" dataType="date">
     </dxi-column>
