@@ -2,9 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { PeopleService } from 'src/app/people.service';
 import { People } from 'src/app/shared/models/people.model';
 import { DxDataGridComponent } from "devextreme-angular";
-import {catchError, map} from 'rxjs/operators'; 
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, lastValueFrom, of } from "rxjs";
+import { HttpClient } from "@angular/common/http";
 
 
 
@@ -72,7 +70,6 @@ export class PeopleComponent {
         })
   }
 
-j
   onPeopleSaving(event: any) {
     console.log(event.changes[0])
     event.cancel = true;

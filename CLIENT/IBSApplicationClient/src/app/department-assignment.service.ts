@@ -17,7 +17,7 @@ export class DepartmentAssignmentService {
   departmentAssignmentIdURL = "";
 
   departmentURL:string= 'https://localhost:7022/api/Departments'
-  peopleUrl:string= 'https://localhost:7022/api/People'
+  activePeopleUrl:string= 'https://localhost:7022/api/People/ActivePeople'
 
   getDepartmentAssignment(): Observable<DepartmentAssignment[]> {
     return this.myHttp.get<DepartmentAssignment[]>(this.departmentAssignmentURL);
@@ -27,8 +27,8 @@ export class DepartmentAssignmentService {
     return this.myHttp.get<Department[]>(this.departmentURL);
   }
 
-  getPeople() : Observable<People[]> {
-    return this.myHttp.get<People[]>(this.peopleUrl);
+  getActivePeople() : Observable<People[]> {
+    return this.myHttp.get<People[]>(this.activePeopleUrl);
   }
 
 

@@ -152,7 +152,6 @@ namespace IBSApplicationExercise1.Models
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasDefaultValueSql("((1))")
                     .HasComment("1=active, 0=inactive");
 
                 entity.Property(e => e.CreatedBy)

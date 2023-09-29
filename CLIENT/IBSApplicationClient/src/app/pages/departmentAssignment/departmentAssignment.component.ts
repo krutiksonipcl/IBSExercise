@@ -21,7 +21,7 @@ export class departmentAssignmentComponent {
   ngOnInit(): void {
     this.getDepartmentAssignment();
     this.getDepartment();
-    this.getPeople();
+    this.getActivePeople();
   }
 
 
@@ -39,8 +39,8 @@ export class departmentAssignmentComponent {
     )
   }
 
-  getPeople(): void {
-    this.departmentAssignmentService.getPeople()
+  getActivePeople(): void {
+    this.departmentAssignmentService.getActivePeople()
     .subscribe(people => {
       this.people = people;}
     )

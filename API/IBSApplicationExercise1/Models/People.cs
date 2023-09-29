@@ -20,7 +20,7 @@ namespace IBSApplicationExercise1.Models
         /// <summary>
         /// 1=active, 0=inactive
         /// </summary>
-        public bool? Active { get; set; }
+        public bool Active { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string CreatedBy { get; set; }

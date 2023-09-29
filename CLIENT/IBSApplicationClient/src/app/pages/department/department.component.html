@@ -12,8 +12,18 @@
   <dxi-column dataField="departmentId" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="departmentName">
     <dxi-validation-rule type="required"></dxi-validation-rule>
+    <dxi-validation-rule
+      type="async"
+      message="Department Name is not unique"
+      [validationCallback]="asyncNameValidation">
+    </dxi-validation-rule>
   </dxi-column>
-  <dxi-column dataField="abbrDepartmentName">
+  <dxi-column dataField="abbrDepartmentName" caption="Abbreviated Department Name">
     <dxi-validation-rule type="required"></dxi-validation-rule>
+    <dxi-validation-rule
+      type="async"
+      message="Abbreviated Department Name is not unique"
+      [validationCallback]="asyncNameValidation">
+    </dxi-validation-rule>
   </dxi-column>
 </dx-data-grid>

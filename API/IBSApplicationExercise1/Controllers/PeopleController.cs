@@ -55,6 +55,31 @@ namespace IBSApplicationExercise1.Controllers
             //return await _context.People.ToListAsync();
         }
 
+        // GET: api/People
+        /// <summary>
+        /// returns list of each row in the table People
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ActivePeople")]
+        public async Task<ActionResult<IEnumerable<PeopleDTO>>> GetActivePeople()
+        {
+            if (_context.People == null)
+            {
+                return NotFound();
+            }
+
+            if (!_context.People.Any())
+            {
+                return NotFound();
+            }
+
+            var activePeople = await _context.People
+                .Where(da => da.Active == true)
+                .ToListAsync();
+
+            return Ok(activePeople);
+        }
+
         // GET: api/People/5
         /// <summary>
         /// returns the row for the specified PeopleID if found
@@ -119,8 +144,16 @@ namespace IBSApplicationExercise1.Controllers
             {
                 return Problem("Entity set " + nameof(IBSApplicationExerciseContext.People) + " is null.");
             }
-            var addPerson = new People()
+
+            if (newPerson.Active == null)
             {
+                newPerson.Active = true;
+            }
+
+
+            var addPerson = new People()
+            {   
+                Active = newPerson.Active ? true : false, 
                 FirstName = newPerson.FirstName,
                 LastName = newPerson.LastName,
                 Email = newPerson.Email,
