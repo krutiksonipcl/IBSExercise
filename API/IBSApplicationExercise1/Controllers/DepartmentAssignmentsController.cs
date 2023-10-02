@@ -33,15 +33,15 @@ namespace IBSApplicationExercise1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DepartmentAssignment>>> GetDepartmentAssignment()
         {
-          if (_context.DepartmentAssignment == null)
+          if (_context.DepartmentAssignments == null)
           {
               return NotFound();
           }
-          if (!_context.DepartmentAssignment.Any())
+          if (!_context.DepartmentAssignments.Any())
             {
             return NotFound();
           }
-            return await _context.DepartmentAssignment.ToListAsync();
+            return await _context.DepartmentAssignments.ToListAsync();
         }
 
         // GET: api/DepartmentAssignments/id
@@ -54,11 +54,11 @@ namespace IBSApplicationExercise1.Controllers
         [HttpGet("{AssignmentID}")]
         public async Task<ActionResult<DepartmentAssignment>> GetDepartmentAssignment(Guid AssignmentID)
         {
-          if (_context.DepartmentAssignment == null)
+          if (_context.DepartmentAssignments == null)
           {
               return NotFound();
           }
-            var departmentAssignment = await _context.DepartmentAssignment.FindAsync(AssignmentID);
+            var departmentAssignment = await _context.DepartmentAssignments.FindAsync(AssignmentID);
 
             if (departmentAssignment == null)
             {
@@ -66,38 +66,6 @@ namespace IBSApplicationExercise1.Controllers
             }
 
             return departmentAssignment;
-        }
-        #endregion
-
-        #region put
-        // PUT: api/DepartmentAssignments/id
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        /// <summary>
-        /// used to update a record in DepartmentAssignment table
-        /// </summary>
-        /// <param name="AssignmentID"></param>
-        /// <param name="departmentAssignment"></param>
-        /// <returns></returns>
-        [HttpPut("{AssignmentID}")]
-        public async Task<DepartmentAssignmentDTO> PutDepartmentAssignment(Guid AssignmentID, DepartmentAssignmentDTO updatedDepartmentAssignment)
-        {
-            DepartmentAssignment recordToUpdate = await ( from departmentAssignment in _context.DepartmentAssignment
-                                                where departmentAssignment.AssignmentId == AssignmentID
-                                                select departmentAssignment ).FirstAsync();  
-
-            recordToUpdate.DepartmentId = AssignmentID;
-            recordToUpdate.DepartmentName = updatedDepartmentAssignment.DepartmentName ?? recordToUpdate.DepartmentName;
-            recordToUpdate.Email = recordToUpdate.Email;
-            recordToUpdate.FirstName = recordToUpdate.FirstName;
-            recordToUpdate.LastName = recordToUpdate.LastName;
-            recordToUpdate.CreatedBy = "Krutik Soni";
-            recordToUpdate.CreatedDate = recordToUpdate.CreatedDate;
-            recordToUpdate.ModifiedBy = "Krutik Soni";
-
-            _context.UpdateRange(recordToUpdate);
-            await _context.SaveChangesAsync();
-
-            return updatedDepartmentAssignment;
         }
         #endregion
 
@@ -111,21 +79,20 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="departmentAssignment"> the data from the front end to be set into the DepartmentAssignment table</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<DepartmentAssignment>> PostDepartmentAssignment(DepartmentAssignment newDepartmentAssignment)
+        public async Task<ActionResult<DepartmentAssignment>> PostDepartmentAssignment(DepartmentAssignmentDTO newDepartmentAssignment)
         {
-            if (_context.DepartmentAssignment == null)
+            if (_context.DepartmentAssignments == null)
             {
-                return Problem("Entity set " + nameof(IBSApplicationExerciseContext.DepartmentAssignment)+ " is null.");
+                return Problem("Entity set " + nameof(IBSApplicationExerciseContext.DepartmentAssignments) + " is null.");
             }
 
-
-            var department = await _context.Department.FindAsync(newDepartmentAssignment.DepartmentId);
-            var people = await _context.People.FindAsync(newDepartmentAssignment.PeopleId);
+            var department = await _context.Departments.FindAsync(newDepartmentAssignment.DepartmentId);
+            var people = await _context.People.FindAsync(newDepartmentAssignment.PersonId);
 
             var addDepartmentAssignment = new DepartmentAssignment()
             {
                 DepartmentId = department.DepartmentId,
-                PeopleId = people.PeopleId,
+                PersonId = people.PersonId,
                 DepartmentName = department.DepartmentName,
                 FirstName = people.FirstName,
                 LastName = people.LastName,
@@ -135,7 +102,7 @@ namespace IBSApplicationExercise1.Controllers
             };
 
 
-            _context.DepartmentAssignment.Add(addDepartmentAssignment);
+            _context.DepartmentAssignments.Add(addDepartmentAssignment);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetDepartmentAssignment", new { AssignmentID = newDepartmentAssignment.AssignmentId }, newDepartmentAssignment);
@@ -152,17 +119,17 @@ namespace IBSApplicationExercise1.Controllers
         [HttpDelete("{AssignmentID}")]
         public async Task<IActionResult> DeleteDepartmentAssignment(Guid AssignmentID)
         {
-            if (_context.DepartmentAssignment == null)
+            if (_context.DepartmentAssignments == null)
             {
                 return NotFound();
             }
-            var departmentAssignment = await _context.DepartmentAssignment.FindAsync(AssignmentID);
+            var departmentAssignment = await _context.DepartmentAssignments.FindAsync(AssignmentID);
             if (departmentAssignment == null)
             {
                 return NotFound();
             }
 
-            _context.DepartmentAssignment.Remove(departmentAssignment);
+            _context.DepartmentAssignments.Remove(departmentAssignment);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -177,7 +144,7 @@ namespace IBSApplicationExercise1.Controllers
         /// <returns></returns>
         private bool DepartmentAssignmentExists(Guid AssignmentID)
         {
-            return (_context.DepartmentAssignment?.Any(e => e.AssignmentId == AssignmentID)).GetValueOrDefault();
+            return (_context.DepartmentAssignments?.Any(e => e.AssignmentId == AssignmentID)).GetValueOrDefault();
         }
         #endregion
     }

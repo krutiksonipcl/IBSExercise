@@ -2,7 +2,7 @@
 {
     public class PeopleDTO
     {
-        public Guid PeopleId { get; set; }
+        public Guid PersonId { get; set; }
 
         public string Email { get; set; }
 

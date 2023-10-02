@@ -28,7 +28,6 @@ export class PeopleService {
     getPerson() {}
 
     saveChanges(change: Change<People>, clonedItem: any) {
-      console.log(change.type)
       switch (change.type) {
         case 'update':
           return this.updatePerson(clonedItem);
@@ -41,19 +40,16 @@ export class PeopleService {
 
     //update a specific person's data
     updatePerson(clonedItem: any) {
-      console.log("Update" + clonedItem);
       this.peopleIdURL = clonedItem.peopleId;
       return this.myhttp.put(this.peopleUrl + "/" + this.peopleIdURL, clonedItem);
     }
   
     // add a new person to the table
     insertPerson(clonedItem: any): Observable<People[]> {
-      console.log("Insert" + clonedItem);
       return this.myhttp.post<People[]>(this.peopleUrl, clonedItem)
     }
 
     deletePerson(clonedItem: any) {
-      console.log("Delete" + clonedItem);
       this.peopleIdURL = clonedItem.peopleId;
       return this.myhttp.delete(this.peopleUrl + "/" + this.peopleIdURL, clonedItem);
     }

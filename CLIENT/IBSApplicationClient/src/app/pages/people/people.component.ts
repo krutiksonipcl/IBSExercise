@@ -30,8 +30,8 @@ export class PeopleComponent {
     this.PeopleService.getPeople()
     .subscribe(people => {
       this.people = people;
-      console.log(this.people)}
-      );
+      }
+    );
   }
 
   /**
@@ -42,7 +42,6 @@ export class PeopleComponent {
    */
   asyncValidation(params: any) {
     delete params.data['__KEY__'];
-    console.log(params.data);
     
     return new Promise<void>((resolve, reject) => {
       this.myhttp.get(this.peopleUrl)
@@ -55,7 +54,6 @@ export class PeopleComponent {
                   this.isValid = false 
                 };
               }
-              console.log(this.isValid);
               this.isValid ? resolve() : reject(res.message);
               this.isValid = true; 
 
@@ -71,7 +69,6 @@ export class PeopleComponent {
   }
 
   onPeopleSaving(event: any) {
-    console.log(event.changes[0])
     event.cancel = true;
 
     var clonedItem = event.changes[0].key;
@@ -82,7 +79,6 @@ export class PeopleComponent {
       delete event.changes[0].data['__KEY__'];
       this.PeopleService.insertPerson(changes).subscribe(people =>{
         this.people = people;
-        console.log(people);
         this.peopleGrid.instance.refresh();}
       );
     }

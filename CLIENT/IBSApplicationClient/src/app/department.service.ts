@@ -35,7 +35,6 @@ export class DepartmentService {
  * @returns an observable 
  */
   saveChanges(change: Change<Department>, clonedItem: any) {
-    console.log(change.type)
     switch (change.type) {
       case 'update':
         return this.updateDepartment(clonedItem);
@@ -47,19 +46,16 @@ export class DepartmentService {
   }
 
   updateDepartment(clonedItem: any) {
-    console.log("Update" + clonedItem);
     this.departmentIdURL = clonedItem.departmentId;
     // const headers = new HttpHeaders({'Content-Type' : 'application/json' })
     return this.myHttp.put(this.departmentURL+'/'+this.departmentIdURL, clonedItem);
   }
   
   insertDepartment(clonedItem: any): Observable<Department[]> {
-    console.log("Insert" + clonedItem);
     return this.myHttp.post<Department[]>(this.departmentURL, clonedItem)
   }
 
   deleteDepartment(clonedItem: any){
-    console.log("Delete" + clonedItem);
     this.departmentIdURL = clonedItem.departmentId;
     return this.myHttp.delete(this.departmentURL+"/"+this.departmentIdURL);
   }

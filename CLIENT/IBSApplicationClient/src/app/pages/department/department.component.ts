@@ -28,13 +28,12 @@ export class DepartmentComponent {
     this.departmentService.getDepartment()
     .subscribe(department => {
       this.department = department;
-      console.log(this.department)}
+      }
     );
   }
 
   //https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/EditStateManagement/Angular/Light/
   onDepartmentAssignmentSaving(event: any) {
-    console.log(event.changes[0])
     event.cancel = true;
 
     var clonedItem = event.changes[0].key;
@@ -45,7 +44,6 @@ export class DepartmentComponent {
       delete event.changes[0].data['__KEY__'];
       this.departmentService.insertDepartment(changes).subscribe(department =>{
         this.department = department;
-        console.log(department);
         this.departmentGrid.instance.refresh();}
       );
     }
@@ -59,7 +57,6 @@ export class DepartmentComponent {
 
   asyncNameValidation(params: any) {
     delete params.data['__KEY__'];
-    console.log(params.data);
 
     return new Promise<void>((resolve, reject) => {
       this.myhttp.get(this.departmentURL)
@@ -71,7 +68,6 @@ export class DepartmentComponent {
             this.isValid = false;
           };
         }
-        console.log(this.isValid);
         this.isValid ? resolve() : reject(res.message);
         this.isValid = true;
 
@@ -88,7 +84,6 @@ export class DepartmentComponent {
 
   asyncAbbrNameValidation(params: any) {
     delete params.data['__KEY__'];
-    console.log(params.data);
 
     return new Promise<void>((resolve, reject) => {
       this.myhttp.get(this.departmentURL)
@@ -100,7 +95,6 @@ export class DepartmentComponent {
             this.isValid = false;
           };
         }
-        console.log(this.isValid);
         this.isValid ? resolve() : reject(res.message);
         this.isValid = true;
 

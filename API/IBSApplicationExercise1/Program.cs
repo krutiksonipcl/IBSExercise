@@ -1,10 +1,12 @@
+using IBSApplicationExercise1.Controllers;
 using IBSApplicationExercise1.Models;
+using IBSApplicationExercise1.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddTransient<DepartmentService>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<IBSApplicationExerciseContext>(options =>
 { // this is dependency injection of the database context into the program so that the conrollers can use it

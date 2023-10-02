@@ -8,33 +8,45 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBSApplicationExercise1.Models
 {
-    [Table("DepartmentAssignment")]
-    public partial class DepartmentAssignment
+    [Index("Email", Name = "UQ__People__AB6E616436930FE2", IsUnique = true)]
+    public partial class Person
     {
+        public Person()
+        {
+            DepartmentAssignments = new HashSet<DepartmentAssignment>();
+        }
+
         [Key]
-        [Column("assignmentID")]
-        public Guid AssignmentId { get; set; }
         [Column("personID")]
         public Guid PersonId { get; set; }
-        [Column("departmentID")]
-        public Guid DepartmentId { get; set; }
-        [Column("departmentName")]
-        [StringLength(100)]
-        [Unicode(false)]
-        public string DepartmentName { get; set; }
         [Required]
         [Column("email")]
         [StringLength(50)]
         [Unicode(false)]
         public string Email { get; set; }
+        [Required]
         [Column("firstName")]
         [StringLength(50)]
         [Unicode(false)]
         public string FirstName { get; set; }
+        [Required]
         [Column("lastName")]
         [StringLength(50)]
         [Unicode(false)]
         public string LastName { get; set; }
+        [Column("phoneNumber")]
+        [StringLength(50)]
+        [Unicode(false)]
+        public string PhoneNumber { get; set; }
+        /// <summary>
+        /// 1=active, 0=inactive
+        /// </summary>
+        [Column("active")]
+        public bool Active { get; set; }
+        [Column("startDate", TypeName = "datetime")]
+        public DateTime? StartDate { get; set; }
+        [Column("endDate", TypeName = "datetime")]
+        public DateTime? EndDate { get; set; }
         [Column("createdBy")]
         [StringLength(100)]
         [Unicode(false)]
@@ -48,8 +60,7 @@ namespace IBSApplicationExercise1.Models
         [Column("modifiedDate", TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 
-        [ForeignKey("PersonId")]
-        [InverseProperty("DepartmentAssignments")]
-        public virtual Person Person { get; set; }
+        [InverseProperty("Person")]
+        public virtual ICollection<DepartmentAssignment> DepartmentAssignments { get; set; }
     }
 }

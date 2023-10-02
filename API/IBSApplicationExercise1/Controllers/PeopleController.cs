@@ -29,79 +29,39 @@ namespace IBSApplicationExercise1.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PeopleDTO>>> GetPeople()
+        public async Task<ActionResult<IEnumerable<PeopleDTO>>> GetPeople([FromQuery] bool ActiveOnly)
         {
-            if (_context.People == null)
-            {
-                return NotFound();
-            }
 
             if (!_context.People.Any())
             {
                 return NotFound();
             }
-
-            return await _context.People.Select(x => new PeopleDTO
+            
+            if (ActiveOnly)
             {
-                PeopleId = x.PeopleId,
-                Email = x.Email,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                PhoneNumber = x.PhoneNumber,
-                Active = x.Active,
-                StartDate = x.StartDate,
-                EndDate = x.EndDate
-            }).ToListAsync();
+                var activePeople = await _context.People
+                       .Where(da => da.Active == true)
+                       .ToListAsync();
+
+                return Ok(activePeople);
+
+            }
+            else
+            {
+                return await _context.People.Select(x => new PeopleDTO
+                {
+                    PersonId = x.PersonId,
+                    Email = x.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    PhoneNumber = x.PhoneNumber,
+                    Active = x.Active,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate
+                }).ToListAsync();
+            }
+            
             //return await _context.People.ToListAsync();
-        }
-
-        // GET: api/People
-        /// <summary>
-        /// returns list of each row in the table People
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("ActivePeople")]
-        public async Task<ActionResult<IEnumerable<PeopleDTO>>> GetActivePeople()
-        {
-            if (_context.People == null)
-            {
-                return NotFound();
-            }
-
-            if (!_context.People.Any())
-            {
-                return NotFound();
-            }
-
-            var activePeople = await _context.People
-                .Where(da => da.Active == true)
-                .ToListAsync();
-
-            return Ok(activePeople);
-        }
-
-        // GET: api/People/5
-        /// <summary>
-        /// returns the row for the specified PeopleID if found
-        /// otherwise returns NotFound() which is a 404 status code
-        /// </summary>
-        /// <param name="PeopleID">ID and primary key in the DepartmentAssignment Table</param>
-        /// <returns></returns>
-        [HttpGet("{PeopleID}")]
-        public async Task<ActionResult<People>> GetPeople(Guid PeopleID)
-        {
-          if (_context.People == null)
-          {
-              return NotFound();
-          }
-            var people = await _context.People.FindAsync(PeopleID);
-
-            if (people == null)
-            {
-                return NotFound();
-            }
-
-            return people;
         }
         #endregion
 
@@ -115,9 +75,9 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="people">model representing the People table</param>
         /// <returns></returns>
         [HttpPut("{PeopleID}")]
-        public async Task<IActionResult> PutPeople(Guid PeopleID, People people)
+        public async Task<IActionResult> PutPeople(Guid PersonId, Person people)
         {
-            if (PeopleID != people.PeopleId)
+            if (PersonId != people.PersonId)
             {
                 return BadRequest();
             }
@@ -138,22 +98,16 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="people"> the data from the front end to be set into the DepartmentAssignment table</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<People>> PostPeople(People newPerson)
+        public async Task<ActionResult<Person>> PostPeople(Person newPerson)
         {
             if (_context.People == null)
             {
                 return Problem("Entity set " + nameof(IBSApplicationExerciseContext.People) + " is null.");
             }
 
-            if (newPerson.Active == null)
-            {
-                newPerson.Active = true;
-            }
-
-
-            var addPerson = new People()
+            var addPerson = new Person()
             {   
-                Active = newPerson.Active ? true : false, 
+                Active = newPerson.Active, 
                 FirstName = newPerson.FirstName,
                 LastName = newPerson.LastName,
                 Email = newPerson.Email,
@@ -169,7 +123,7 @@ namespace IBSApplicationExercise1.Controllers
             // return 201 status if successful and creates a new resource in the server
             // adds location header to specify the URI of the new item
             // references GetPeople 
-            return CreatedAtAction(nameof(GetPeople), new { PeopleID = newPerson.PeopleId }, newPerson);
+            return CreatedAtAction(nameof(GetPeople), new { PeopleID = newPerson.PersonId }, newPerson);
         }
         #endregion
 
@@ -197,18 +151,6 @@ namespace IBSApplicationExercise1.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-        #endregion
-
-        #region helper function to check if people exists
-        /// <summary>
-        /// Checks if the assignmentID exists in the DepartmentAssignment Table
-        /// </summary>
-        /// <param name="PeopleID"></param>
-        /// <returns></returns>
-        private bool PeopleExists(Guid PeopleID)
-        {
-            return (_context.People?.Any(e => e.PeopleId == PeopleID)).GetValueOrDefault();
         }
         #endregion
     }

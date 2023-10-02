@@ -2,24 +2,39 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace IBSApplicationExercise1.Models
 {
+    [Table("Department")]
+    [Index("DepartmentName", "AbbrDepartmentName", Name = "uqDepartmentNames", IsUnique = true)]
     public partial class Department
     {
-        public Department()
-        {
-            DepartmentAssignment = new HashSet<DepartmentAssignment>();
-        }
-
+        [Key]
+        [Column("departmentID")]
         public Guid DepartmentId { get; set; }
+        [Required]
+        [Column("departmentName")]
+        [StringLength(100)]
+        [Unicode(false)]
         public string DepartmentName { get; set; }
+        [Column("abbrDepartmentName")]
+        [StringLength(50)]
+        [Unicode(false)]
         public string AbbrDepartmentName { get; set; }
+        [Column("createdBy")]
+        [StringLength(100)]
+        [Unicode(false)]
         public string CreatedBy { get; set; }
+        [Column("createdDate", TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
+        [Column("modifiedBy")]
+        [StringLength(100)]
+        [Unicode(false)]
         public string ModifiedBy { get; set; }
+        [Column("modifiedDate", TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
-
-        public virtual ICollection<DepartmentAssignment> DepartmentAssignment { get; set; }
     }
 }

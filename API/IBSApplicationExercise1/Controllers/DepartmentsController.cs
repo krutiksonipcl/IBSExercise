@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IBSApplicationExercise1.Models;
 using NuGet.Protocol;
+using IBSApplicationExercise1.Services;
 
 namespace IBSApplicationExercise1.Controllers
 {
@@ -16,69 +17,37 @@ namespace IBSApplicationExercise1.Controllers
     {   
         #region init
         private readonly IBSApplicationExerciseContext _context;
+        private readonly DepartmentService _departmentService;
 
-        public DepartmentsController(IBSApplicationExerciseContext context)
+        public DepartmentsController(IBSApplicationExerciseContext context, DepartmentService departmentService)
         {
+            _departmentService = departmentService;
             _context = context;
         }
         #endregion
 
         #region get
-        // GET: api/Departments
         /// <summary>
+        /// GET: api/Departments
         /// returns list of each row in the table Department
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DepartmentDTO>>> GetDepartment()
         {
-
-            if (_context.Department == null) {
+            if (!_context.Departments.Any()) {
                 return NotFound();
             }
 
-            if (!_context.Department.Any()) {
-                return NotFound();
-            }
-
-            return await _context.Department.Select(x => new DepartmentDTO
-            {
-                DepartmentId = x.DepartmentId,
-                DepartmentName = x.DepartmentName,
-                AbbrDepartmentName = x.AbbrDepartmentName,
-
-            }).ToListAsync();
-        }
-
-        // GET: api/Departments/5
-        /// <summary>
-        /// returns the row for the specified DepartmentID if found
-        /// otherwise returns NotFound() which is a 404 status code
-        /// </summary>
-        /// <param name="DepartmentID"></param>
-        /// <returns></returns>
-        [HttpGet("{DepartmentID}")]
-        public async Task<ActionResult<Department>> GetDepartment(Guid DepartmentID)
-        {
-            if (_context.Department == null)
-            {
-                return NotFound();
-            }
-            var department = await _context.Department.FindAsync(DepartmentID);
-
-            if (department == null)
-            {
-                return NotFound();
-            }
-
-            return department;
+            var departments = await _departmentService.GetDepartmentAsync();
+            return Ok(departments);
         }
         #endregion
 
         #region put
-        // PUT: api/Departments/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         /// <summary>
+        /// PUT: api/Departments/5
         /// used to add a new row into the Department table
         /// </summary>
         /// <param name="DepartmentID"></param>
@@ -87,7 +56,7 @@ namespace IBSApplicationExercise1.Controllers
         [HttpPut("{DepartmentID}")]
         public async Task<DepartmentDTO> PutDepartment(Guid DepartmentID, DepartmentDTO updatedDepartment)
         {
-            Department recordToUpdate = await (from department in _context.Department
+            Department recordToUpdate = await (from department in _context.Departments
                                                where department.DepartmentId == updatedDepartment.DepartmentId
                                                select department).FirstAsync();
 
@@ -103,15 +72,13 @@ namespace IBSApplicationExercise1.Controllers
             _context.UpdateRange(recordToUpdate);
             await _context.SaveChangesAsync();
             return updatedDepartment;
-            // return the object back (good practice)
 
         }
         #endregion
 
         #region post
-        // POST: api/Departments
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
+        /// POST: api/Departments
         /// used to update a row into the Department table
         /// </summary>
         /// <param name="department"></param>
@@ -119,9 +86,9 @@ namespace IBSApplicationExercise1.Controllers
         [HttpPost]
         public async Task<ActionResult<Department>> PostDepartment(DepartmentDTO newDepartment)
         { 
-            if (_context.Department == null)
+            if (_context.Departments == null)
             {
-                return Problem("Entity set " + nameof(IBSApplicationExerciseContext.Department) + " is null.");
+                return Problem("Entity set " + nameof(IBSApplicationExerciseContext.Departments) + " is null.");
             }
 
             var addDepartment = new Department()
@@ -136,7 +103,7 @@ namespace IBSApplicationExercise1.Controllers
             recordToAdd.AbbrDepartmentName = newDepartment.AbbrDepartmentName;
             recordToAdd.CreatedBy = "Krutik Soni";
             recordToAdd.ModifiedBy = "Krutik Soni";*/
-            _context.Department.Add(addDepartment);
+            _context.Departments.Add(addDepartment);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetDepartment), new { DepartmentID = newDepartment.DepartmentId }, newDepartment);
             
@@ -146,8 +113,8 @@ namespace IBSApplicationExercise1.Controllers
 
 
         #region delete
-        // DELETE: api/Departments/5
         /// <summary>
+        /// DELETE: api/Departments/5
         /// used to delete rows in the Department table by using the Department
         /// </summary>
         /// <param name="DepartmentID">id used to delete that department/row from the table</param>
@@ -155,32 +122,20 @@ namespace IBSApplicationExercise1.Controllers
         [HttpDelete("{DepartmentID}")]
         public async Task<IActionResult> DeleteDepartment(Guid DepartmentID)
         {
-            if (_context.Department == null)
+            if (_context.Departments == null)
             {
                 return NotFound();
             }
-            var department = await _context.Department.FindAsync(DepartmentID);
+            var department = await _context.Departments.FindAsync(DepartmentID);
             if (department == null)
             {
                 return NotFound();
             }
 
-            _context.Department.Remove(department);
+            _context.Departments.Remove(department);
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-        #endregion
-
-        #region helper function to check if a department exists
-        /// <summary>
-        /// Checks if the assignmentID exists in the DepartmentAssignment Table
-        /// </summary>
-        /// <param name="DepartmentID"></param>
-        /// <returns></returns>
-        private bool DepartmentExists(Guid DepartmentID)
-        {
-            return (_context.Department?.Any(e => e.DepartmentId == DepartmentID)).GetValueOrDefault();
         }
         #endregion
     }
