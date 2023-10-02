@@ -117,12 +117,22 @@ namespace IBSApplicationExercise1.Controllers
         [HttpPut("{PeopleID}")]
         public async Task<IActionResult> PutPeople(Guid PeopleID, People people)
         {
-            if (PeopleID != people.PeopleId)
-            {
-                return BadRequest();
-            }
+            var found = await _context.People.FirstAsync(x => x.PeopleId == PeopleID);
+            if (found == null)
+                return NotFound();
 
-            _context.Entry(people).State = EntityState.Modified;
+            found.StartDate = people.StartDate;
+            found.EndDate = people.EndDate;
+            found.Active = people.Active;
+            found.FirstName = people.FirstName;
+            found.LastName = people.LastName;
+            found.Email = people.Email;
+            found.PhoneNumber = people.PhoneNumber;
+
+
+            return NotFound();
+            throw new Exception("test message");
+
             await _context.SaveChangesAsync();
            
             return NoContent();
@@ -150,6 +160,7 @@ namespace IBSApplicationExercise1.Controllers
                 newPerson.Active = true;
             }
 
+            throw new Exception();
 
             var addPerson = new People()
             {   
