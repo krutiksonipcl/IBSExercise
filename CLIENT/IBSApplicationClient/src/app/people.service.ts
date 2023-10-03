@@ -1,62 +1,66 @@
 import { Inject, Injectable } from "@angular/core";
-import { Observable, lastValueFrom, of } from "rxjs";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, lastValueFrom, of, throwError } from "rxjs";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Change } from './shared/models/change.model'
 
 import { People } from '../app/shared/models/people.model'
+import notify from "devextreme/ui/notify";
 @Injectable ({
     providedIn: 'root'
 })
 
 export class PeopleService {
 
-    constructor(private myhttp:HttpClient) {}
-    // an empty list of people objects
-    peopleList: People [] = [];
+  //#region init
 
-    peopleData: People=new People();
-    //this is the root url in the swagger api used to make http calls for the people model
-    peopleUrl:string= 'https://localhost:7022/api/People'
-    peopleIdURL: string = "";
-    
-    // send all data to be displayed in the DevExpress grid
-    getPeople() : Observable<People[]> {
-        return this.myhttp.get<People[]>(this.peopleUrl);
-    }
+  //this is the root url in the swagger api used to make http calls for the people model
+  peopleUrl:string= 'https://localhost:7022/api/People'
 
-    // send person specific data to be displayed
-    getPerson() {}
+  constructor(private myhttp:HttpClient) {}
 
-    saveChanges(change: Change<People>, clonedItem: any) {
-      switch (change.type) {
-        case 'update':
-          return this.updatePerson(clonedItem);
-        case 'insert':
-          return this.insertPerson(clonedItem);
-        case 'remove':
-          return this.deletePerson(clonedItem);
-      }
-    }
+  //#endregion
 
-    //update a specific person's data
-    updatePerson(clonedItem: any) {
-      this.peopleIdURL = clonedItem.peopleId;
-      return this.myhttp.put(this.peopleUrl + "/" + this.peopleIdURL, clonedItem);
-    }
+  //#region public methods
   
-    // add a new person to the table
-    insertPerson(clonedItem: any): Observable<People[]> {
-      return this.myhttp.post<People[]>(this.peopleUrl, clonedItem)
+  /**
+   * ensure all public methods have a /** comment
+   * @returns 
+   */
+  public async getPeople() : Promise<People[] | void> {
+    return await lastValueFrom(this.myhttp.get<People[]>(this.peopleUrl))
+      .catch((err: HttpErrorResponse) => this.displayError(err));
+  }
+
+  public async updatePerson(key: People, values: People): Promise<People | void> {
+    return await lastValueFrom(this.myhttp.put<People>(this.peopleUrl + "/" + key.peopleId, values))
+      .catch((err: HttpErrorResponse) => this.displayError(err));
+  }
+
+  public async insertPerson(person: People): Promise<People | void> {
+    return await lastValueFrom(this.myhttp.post<People>(this.peopleUrl, person))
+      .catch((err: HttpErrorResponse) => this.displayError(err));
+  }
+
+  public async deletePerson(id: string): Promise<void> {
+    await lastValueFrom(this.myhttp.delete<void>(this.peopleUrl + "/" + id, {observe: "response"}))
+      .catch((err: HttpErrorResponse) => this.displayError(err));
+  }
+
+  //#endregion public methods
+
+  //#region error handler
+
+  private displayError(error: HttpErrorResponse): void {
+    switch (error.status) {
+      case 404:
+        notify("Person not found", "error");
+        break;
+      default:
+        notify("Internal server error", "error");
+        break;
     }
+  }
 
-    deletePerson(clonedItem: any) {
-      this.peopleIdURL = clonedItem.peopleId;
-      return this.myhttp.delete(this.peopleUrl + "/" + this.peopleIdURL, clonedItem);
-    }
-
-    // emailCheck(params: any) {
-    //   // return this.myhttp.post(this.peopleUrl, params);
-    // }
-
+  //#endregion error handler
 
 }
