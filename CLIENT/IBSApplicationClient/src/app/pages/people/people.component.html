@@ -1,11 +1,10 @@
 <h2 class="content-block">People</h2>
 
-<dx-data-grid #peopleGrid [dataSource]=people (onSaving)="onPeopleSaving($event)">
+<dx-data-grid #peopleGrid [dataSource]="peopleDataSource">
     <dxo-editing
         [allowUpdating]="true"
         [allowAdding]="true"
-        [allowDeleting]="true"
-        mode="row">
+        [allowDeleting]="true">
     </dxo-editing>
     <dxo-search-panel [visible]="true"></dxo-search-panel>
     <dxo-selection mode="single"></dxo-selection>
@@ -20,9 +19,9 @@
         <dxi-validation-rule type="required"></dxi-validation-rule>
         <dxi-validation-rule type="email"></dxi-validation-rule>
         <dxi-validation-rule
-            type="async"
+            type="custom"
             message="Email address is not unique"
-            [validationCallback]="asyncValidation">
+            [validationCallback]="validateEmail">
         </dxi-validation-rule>
     </dxi-column>
     <dxi-column dataField="active" dataType="boolean"></dxi-column>

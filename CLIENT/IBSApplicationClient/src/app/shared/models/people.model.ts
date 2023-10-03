@@ -1,12 +1,12 @@
 
 export class People{
-    id: any;
+    peopleId: any;
     firstName!: string;
     lastName!: string;
     phoneNumber!: string;
     email!: string;
     activeStatus!: number;
-    startDate: any;
-    endDate: any;
+    startDate!: Date;
+    endDate!: Date;
     
 }

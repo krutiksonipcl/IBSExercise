@@ -2,91 +2,64 @@ import { Component, ViewChild } from '@angular/core';
 import { PeopleService } from 'src/app/people.service';
 import { People } from 'src/app/shared/models/people.model';
 import { DxDataGridComponent } from "devextreme-angular";
-import { HttpClient } from "@angular/common/http";
-
-
+import DataSource from 'devextreme/data/data_source';
+import CustomStore from 'devextreme/data/custom_store';
 
 @Component({
   templateUrl: 'people.component.html',
 })
-
 export class PeopleComponent {
-  constructor(private PeopleService:PeopleService, private myhttp:HttpClient) {
-    this.asyncValidation = this.asyncValidation.bind(this);
-  }
 
-  peopleUrl:string= 'https://localhost:7022/api/People'
-  people: People[] = [];
-  isValid: boolean = false;
-
-  ngOnInit(): void {
-    this.getPeople();
-  }
+  //#region properties
 
   @ViewChild(DxDataGridComponent) peopleGrid!: DxDataGridComponent;
 
+  public peopleDataSource: DataSource | null = null;
 
-  getPeople(): void {
-    this.PeopleService.getPeople()
-    .subscribe(people => {
-      this.people = people;
-      }
-    );
+  //#endregion properties
+
+  //#region init
+
+  constructor(private PeopleService:PeopleService) {
+    this.validateEmail = this.validateEmail.bind(this);
   }
+
+  ngOnInit(): void {
+    this.peopleDataSource = new DataSource({
+      store: new CustomStore({
+        load: async () => {
+          return await this.PeopleService.getPeople();
+        },
+        remove: async (person: People) => {
+          await this.PeopleService.deletePerson(person.peopleId);
+        },
+        update: async(key: People, values: People) => {
+          const updated = { ...key, ... values };
+          await this.PeopleService.updatePerson(key, updated);
+        },
+        insert: async(person: People) => {
+          const inserted = await this.PeopleService.insertPerson(person)
+          if (inserted)
+            return inserted;
+          else
+            return Promise.resolve(person);
+        }
+      })
+    });
+  }
+
+  //#endregion init
+
+  //#region validation
 
   /**
-   * Async data validation before the user is able to insert a row, to make sure that the email of the new user is unique
-   * Had trouble moving the bulk of this to the service but I imagine there is some sort of promise chaining required
-   * @param params all the rows that are of the new row
-   * @returns a promise
+   * Validator for email
+   * @param e 
+   * @returns 
    */
-  asyncValidation(params: any) {
-    delete params.data['__KEY__'];
-    
-    return new Promise<void>((resolve, reject) => {
-      this.myhttp.get(this.peopleUrl)
-          .toPromise()
-          .then((res: any) => {
-              // res.message contains validation error message
-              this.isValid = true; 
-              for (let person of res){
-                if (params.data.email == person.email){ 
-                  this.isValid = false 
-                };
-              }
-              this.isValid ? resolve() : reject(res.message);
-              this.isValid = true; 
-
-              // ===== or if "res" is { isValid: Boolean, message: String } =====
-              resolve(res);
-          })
-          .catch(error => {
-              console.error("Server-side validation error", error);
-
-              reject("Cannot contact validation server");
-          });
-        })
+  public validateEmail(e: any) : boolean {
+    const matches = this.peopleDataSource?.items().filter((x) => x.email === e.value && x.peopleId !== e.data.peopleId);
+    return (matches?.length ?? 0) == 0 ;
   }
 
-  onPeopleSaving(event: any) {
-    event.cancel = true;
-
-    var clonedItem = event.changes[0].key;
-    const changes = event.changes[0].data;
-
-    if (event.changes[0].type == "insert") {
-      
-      delete event.changes[0].data['__KEY__'];
-      this.PeopleService.insertPerson(changes).subscribe(people =>{
-        this.people = people;
-        this.peopleGrid.instance.refresh();}
-      );
-    }
-    else{
-      for (let key in changes){ clonedItem[key] = changes[key];};
-
-      this.PeopleService.saveChanges(event.changes[0], clonedItem)
-      .subscribe();
-    }
-  }
 }
