@@ -1,6 +1,6 @@
 
 export class People{
-    peopleId: any;
+    personId: any;
     firstName!: string;
     lastName!: string;
     phoneNumber!: string;

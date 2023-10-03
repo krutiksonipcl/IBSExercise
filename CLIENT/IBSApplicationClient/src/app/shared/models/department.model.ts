@@ -1,5 +1,5 @@
 export class Department{
-    id:any;
+    departmentId:any;
     departmentName!: string;
     abbrDepartmentName!: string
 }

@@ -15,9 +15,8 @@ export class ReportingComponent {
     this.getReport();
   }
 
-  getReport() {
-    this.departmentAssignmentService.getDepartmentAssignment()
-    .subscribe(report => {this.report = report;})
+  public async getReport() {
+    await this.departmentAssignmentService.getDepartmentAssignment();
   }
 
   firstLastName(rowData: any){

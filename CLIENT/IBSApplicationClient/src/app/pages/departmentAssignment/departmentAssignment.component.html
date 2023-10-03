@@ -1,6 +1,6 @@
 <h2 class="content-block">Department Assignment</h2>
 
-<dx-data-grid #departmentAssignmentGrid [dataSource]=departmentAssignment (onSaving)="ondepartmentAssignmentSaving($event)">
+<dx-data-grid #departmentAssignmentGrid [dataSource]="departmentAssignmentSource">
   <dxo-editing
     [allowAdding]="true"
     [allowDeleting]="true"
@@ -10,14 +10,14 @@
   <dxi-column dataField="assignmentId" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="departmentId" caption="Department Name">
     <dxo-lookup 
-      [dataSource]=departments
+      [dataSource]="departmentDataSource"
       valueExpr="departmentId"
       displayExpr="departmentName"
     ></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="personId" caption="Email">
     <dxo-lookup 
-      [dataSource]=people
+      [dataSource]="activePeopleDataSource"
       valueExpr="personId"
       displayExpr="email"
     ></dxo-lookup>

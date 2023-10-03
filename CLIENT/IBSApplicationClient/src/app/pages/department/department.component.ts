@@ -3,6 +3,8 @@ import { DxDataGridComponent } from "devextreme-angular";
 import { DepartmentService } from 'src/app/department.service';
 import { Department } from 'src/app/shared/models/department.model';
 import { HttpClient } from "@angular/common/http";
+import DataSource from 'devextreme/data/data_source';
+import CustomStore from 'devextreme/data/custom_store';
 
 @Component({
   templateUrl: 'department.component.html'
@@ -10,103 +12,49 @@ import { HttpClient } from "@angular/common/http";
 
 export class DepartmentComponent {
 
-  constructor(private departmentService:DepartmentService, private myhttp: HttpClient) {
-    this.asyncNameValidation = this.asyncNameValidation.bind(this);
-    this.asyncAbbrNameValidation = this.asyncAbbrNameValidation.bind(this);
-  }
-  department: Department[] = [];
-  departmentURL:string= 'https://localhost:7022/api/Departments'
-  isValid: boolean = false;
-
-  ngOnInit(): void {
-    this.getDepartment();
-  }
-
   @ViewChild(DxDataGridComponent) departmentGrid!: DxDataGridComponent;
 
-  getDepartment(): void {
-    this.departmentService.getDepartment()
-    .subscribe(department => {
-      this.department = department;
-      }
-    );
+  public departmentDataSoure: DataSource | null = null;
+
+  constructor(private departmentService:DepartmentService, private myhttp: HttpClient) {
+    this.validateName = this.validateName.bind(this);
+    this.validateAbbrName = this.validateAbbrName.bind(this);
   }
+  // department: Department[] = [];
+  // departmentURL:string= 'https://localhost:7022/api/Departments'
+  // isValid: boolean = false;
 
-  //https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/EditStateManagement/Angular/Light/
-  onDepartmentAssignmentSaving(event: any) {
-    event.cancel = true;
-
-    var clonedItem = event.changes[0].key;
-    const changes = event.changes[0].data;
-
-    if (event.changes[0].type == "insert") {
-      
-      delete event.changes[0].data['__KEY__'];
-      this.departmentService.insertDepartment(changes).subscribe(department =>{
-        this.department = department;
-        this.departmentGrid.instance.refresh();}
-      );
-    }
-    else{
-      for (let key in changes){ clonedItem[key] = changes[key];};
-
-      this.departmentService.saveChanges(event.changes[0], clonedItem)
-      .subscribe();
-    }
-  }
-
-  asyncNameValidation(params: any) {
-    delete params.data['__KEY__'];
-
-    return new Promise<void>((resolve, reject) => {
-      this.myhttp.get(this.departmentURL)
-      .toPromise()
-      .then((res: any) => {
-        this.isValid = true;
-        for (let department of res){
-          if (params.data.departmentName == department.departmentName) {
-            this.isValid = false;
-          };
+  ngOnInit(): void {
+    this.departmentDataSoure = new DataSource({
+      store: new CustomStore({
+        load: async () => {
+          return await this.departmentService.getDepartment();
+        },
+        remove: async (department: Department) => {
+          return await this.departmentService.deleteDepartment(department.departmentId);
+        },
+        update: async(key: Department, values: Department) => {
+          const updated = { ...key, ...values};
+          await this.departmentService.updateDepartment(key, updated);
+        },
+        insert: async(department: Department) => {
+          const inserted = await this.departmentService.insertDepartment(department)
+          if (inserted)
+            return inserted;
+          else
+            return Promise.resolve(department);
         }
-        this.isValid ? resolve() : reject(res.message);
-        this.isValid = true;
-
-        resolve(res);
       })
-      .catch(error => {
-        console.error("Server-side validation error", error);
-
-        reject("Cannot contact validation server");
-      })
-    }
-    )
+    });
   }
 
-  asyncAbbrNameValidation(params: any) {
-    delete params.data['__KEY__'];
-
-    return new Promise<void>((resolve, reject) => {
-      this.myhttp.get(this.departmentURL)
-      .toPromise()
-      .then((res: any) => {
-        this.isValid = true;
-        for (let department of res){
-          if (params.data.departmentName == department.departmentName) {
-            this.isValid = false;
-          };
-        }
-        this.isValid ? resolve() : reject(res.message);
-        this.isValid = true;
-
-        resolve(res);
-      })
-      .catch(error => {
-        console.error("Server-side validation error", error);
-
-        reject("Cannot contact validation server");
-      })
-    }
-    )
+  public validateName(e: any) : boolean {
+    const matches = this.departmentDataSoure?.items().filter((x) => x.departmentName === e.value && x.departmentId !== e.data.departmentId);
+    return (matches?.length ?? 0) == 0;
   }
-  
+
+  public validateAbbrName(e: any) : boolean {
+    const matches = this.departmentDataSoure?.items().filter((x) => x.abbrDepartmentName === e.value && x.departmentId !== e.data.departmentId);
+    return (matches?.length ?? 0) == 0;
+  }
 }

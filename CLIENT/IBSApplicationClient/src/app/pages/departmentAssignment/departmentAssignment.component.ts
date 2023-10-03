@@ -3,6 +3,8 @@ import { DepartmentAssignment } from 'src/app/shared/models/departmentAssignment
 import { DepartmentAssignmentService } from 'src/app/department-assignment.service';
 import { Department } from 'src/app/shared/models/department.model';
 import { People } from 'src/app/shared/models/people.model';
+import DataSource from 'devextreme/data/data_source';
+import CustomStore from 'devextreme/data/custom_store';
 
 @Component({
   templateUrl: 'departmentAssignment.component.html',
@@ -12,63 +14,50 @@ import { People } from 'src/app/shared/models/people.model';
 export class departmentAssignmentComponent {
   constructor(private departmentAssignmentService: DepartmentAssignmentService) {}
 
-  departmentAssignment: DepartmentAssignment[] = [];
-  departments: Department[] = [];
-  people: People[] = [];
+  public departmentAssignmentSource: DataSource | null = null;
+  public departmentDataSource = {};
+  public activePeopleDataSource = {};
+
 
   departmentName: string[] = []
 
   ngOnInit(): void {
-    this.getDepartmentAssignment();
-    this.getDepartment();
-    this.getActivePeople();
-  }
+    this.departmentAssignmentSource = new DataSource({
+      store: new CustomStore({
+        load: async () => {
+          return await this.departmentAssignmentService.getDepartmentAssignment();
+        },
+        remove: async (departmentAssignment: DepartmentAssignment) => {
+          return await this.departmentAssignmentService.deleteDepartmentAssignment(departmentAssignment.departmentId)
+        },
+        insert: async(departmentAssignment: DepartmentAssignment) => {
+          const inserted = await this.departmentAssignmentService.insertDepartmentAssignment(departmentAssignment)
+          if (inserted)
+            return inserted;
+          else
+            return Promise.resolve(departmentAssignment)
+        }
 
+      })
+    });
 
-  getDepartmentAssignment(): void {
-    this.departmentAssignmentService.getDepartmentAssignment()
-    .subscribe(departmentAssignment => {
-      this.departmentAssignment = departmentAssignment;}
-    )
-  }
+    this.departmentDataSource = new DataSource({
+      store: new CustomStore({
+        load: async () => {
+          return await this.departmentAssignmentService.getDepartment();
+        }
+      })
+    });
 
-  getDepartment(): void {
-    this.departmentAssignmentService.getDepartment()
-    .subscribe(departments => {
-      this.departments = departments;}
-    )
-  }
-
-  getActivePeople(): void {
-    this.departmentAssignmentService.getActivePeople()
-    .subscribe(people => {
-      this.people = people;}
-    )
+    this.activePeopleDataSource = new DataSource({
+      store: new CustomStore({
+        load: async () => {
+          return await this.departmentAssignmentService.getActivePeople();
+        }
+      })
+    })
   }
   
-
-  ondepartmentAssignmentSaving(event: any) {
-    var clonedItem = event.changes[0].key;
-    const changes = event.changes[0].data;
-
-    event.cancel = true;
-    if (event.changes[0].type == "insert"){
-
-      delete event.changes[0].data['__KEY__'];
-
-      this.departmentAssignmentService.insertDepartmentAssignment(changes)
-      .subscribe(departmentAssignment =>{
-        this.departmentAssignment = departmentAssignment;
-      })
-    }
-    // delete
-    else{
-      for (let key in changes){ clonedItem[key] = changes[key];};
-      this.departmentAssignmentService.deleteDepartmentAssignment(clonedItem)
-      .subscribe()
-    }
-
-  }
 }
 
 

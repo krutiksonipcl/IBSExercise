@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, lastValueFrom } from 'rxjs';
+import { HttpClient, HttpParams, HttpErrorResponse} from '@angular/common/http';
 import { DepartmentAssignment } from './shared/models/departmentAssignment.model';
-import { Change } from './shared/models/change.model';
 import { Department } from './shared/models/department.model';
 import { People } from './shared/models/people.model';
+import notify from "devextreme/ui/notify";
 
 
 @Injectable({
@@ -13,39 +13,50 @@ import { People } from './shared/models/people.model';
 export class DepartmentAssignmentService {
 
   constructor(private myHttp:HttpClient) { }
-  changes: Change<DepartmentAssignment>[] = [];
-  departmentAssignmentURL: string = "https://localhost:7022/api/DepartmentAssignments";
-  departmentAssignmentIdURL = "";
-  //params = new HttpParams().set('ActiveOnly', true);
-
+  params = new HttpParams().set('ActiveOnly', true);
   departmentURL:string= 'https://localhost:7022/api/Departments'
-  activePeopleUrl:string= 'https://localhost:7022/api/People/ActivePeople'
+  peopleUrl:string= 'https://localhost:7022/api/People'
+  departmentAssignmentURL: string = "https://localhost:7022/api/DepartmentAssignments";
 
-  getDepartmentAssignment(): Observable<DepartmentAssignment[]> {
-    return this.myHttp.get<DepartmentAssignment[]>(this.departmentAssignmentURL);
+
+
+  public async getDepartmentAssignment(): Promise<DepartmentAssignment[] | void> {
+    return await lastValueFrom(this.myHttp.get<DepartmentAssignment[]>(this.departmentAssignmentURL))
+      .catch((err: HttpErrorResponse) => this.displayError(err));
   }
 
-  getDepartment(): Observable<Department[]> {
-    return this.myHttp.get<Department[]>(this.departmentURL);
+  public async getDepartment(): Promise<Department[] | void> {
+    return await lastValueFrom(this.myHttp.get<Department[]>(this.departmentURL))
+    .catch((err: HttpErrorResponse) => this.displayError(err));
   }
 
-  getActivePeople() : Observable<People[]> {
-    return this.myHttp.get<People[]>(this.activePeopleUrl);
-    //return this.myHttp.get<People[]>(this.activePeopleUrl, { params: this.params });
+  public async getActivePeople() : Promise<People[] | void> {
+    //return this.myHttp.get<People[]>(this.activePeopleUrl);
+    return await lastValueFrom(this.myHttp.get<People[]>(this.peopleUrl, { params: this.params }))
+    .catch((err: HttpErrorResponse) => this.displayError(err));
 
-  }
-
-
-
-  insertDepartmentAssignment(clonedItem: any): Observable<DepartmentAssignment[]> {
-    console.log(clonedItem);
-    return this.myHttp.post<DepartmentAssignment[]>(this.departmentAssignmentURL, clonedItem);
-  }
-
-  deleteDepartmentAssignment(clonedItem: any){
-    this.departmentAssignmentIdURL = clonedItem.assignmentId
-    return this.myHttp.delete(this.departmentAssignmentURL + "/" + this.departmentAssignmentIdURL);
   }
 
 
+
+  public async insertDepartmentAssignment(departmentassignment: DepartmentAssignment): Promise<DepartmentAssignment | void> {
+    return await lastValueFrom(this.myHttp.post<DepartmentAssignment>(this.departmentAssignmentURL, departmentassignment))
+    .catch((err: HttpErrorResponse) => this.displayError(err));
+  }
+
+  public async deleteDepartmentAssignment(id : string){
+    await lastValueFrom(this.myHttp.delete<void>(this.departmentAssignmentURL + "/" + id, {observe: "response"}))
+    .catch((err: HttpErrorResponse) => this.displayError(err));
+  }
+
+  private displayError(error: HttpErrorResponse): void {
+    switch (error.status) {
+      case 404:
+        notify("Not found", "error");
+        break;
+      default:
+        notify("Internal server error", "error");
+        break;
+    }
+  }
 }

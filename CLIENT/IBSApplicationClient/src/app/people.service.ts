@@ -22,7 +22,7 @@ export class PeopleService {
 
   //#region public methods
   
-  /**
+  /**also   
    * ensure all public methods have a /** comment
    * @returns 
    */
@@ -32,7 +32,7 @@ export class PeopleService {
   }
 
   public async updatePerson(key: People, values: People): Promise<People | void> {
-    return await lastValueFrom(this.myhttp.put<People>(this.peopleUrl + "/" + key.peopleId, values))
+    return await lastValueFrom(this.myhttp.put<People>(this.peopleUrl + "/" + key.personId, values))
       .catch((err: HttpErrorResponse) => this.displayError(err));
   }
 
