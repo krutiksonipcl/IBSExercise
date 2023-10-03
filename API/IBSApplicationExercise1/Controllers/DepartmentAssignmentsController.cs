@@ -24,9 +24,9 @@ namespace IBSApplicationExercise1.Controllers
         #endregion
 
         #region get
-        // GET: api/DepartmentAssignments
-        
+
         /// <summary>
+        /// GET: api/DepartmentAssignments
         /// returns list of each row in the table DepartmentAssignment
         /// </summary>
         /// <returns></returns>
@@ -44,37 +44,14 @@ namespace IBSApplicationExercise1.Controllers
             return await _context.DepartmentAssignments.ToListAsync();
         }
 
-        // GET: api/DepartmentAssignments/id
-        /// <summary>
-        /// returns the row for the specified AssignmentID if found
-        /// otherwise returns NotFound() which is a 404 status code
-        /// </summary>
-        /// <param name="AssignmentID">ID and primary key in the DepartmentAssignment Table</param>
-        /// <returns></returns>
-        [HttpGet("{AssignmentID}")]
-        public async Task<ActionResult<DepartmentAssignment>> GetDepartmentAssignment(Guid AssignmentID)
-        {
-          if (_context.DepartmentAssignments == null)
-          {
-              return NotFound();
-          }
-            var departmentAssignment = await _context.DepartmentAssignments.FindAsync(AssignmentID);
-
-            if (departmentAssignment == null)
-            {
-                return NotFound();
-            }
-
-            return departmentAssignment;
-        }
         #endregion
 
 
         #region post
-        // POST: api/DepartmentAssignments
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
-        /// used to assign an existing user to an existing department
+        /// POST: api/DepartmentAssignments
+        /// used to assign an existing user to an existing 
+        /// if not found, returns 404 
         /// </summary>
         /// <param name="departmentAssignment"> the data from the front end to be set into the DepartmentAssignment table</param>
         /// <returns></returns>
@@ -87,7 +64,11 @@ namespace IBSApplicationExercise1.Controllers
             }
 
             var department = await _context.Departments.FindAsync(newDepartmentAssignment.DepartmentId);
+            if (department == null) { return NotFound(); };
+
             var people = await _context.People.FindAsync(newDepartmentAssignment.PersonId);
+            if (people == null) { return NotFound(); }
+
 
             var addDepartmentAssignment = new DepartmentAssignment()
             {
@@ -110,8 +91,9 @@ namespace IBSApplicationExercise1.Controllers
         #endregion
 
         #region delete
-        // DELETE: api/DepartmentAssignments
+
         /// <summary>
+        /// DELETE: api/DepartmentAssignments
         /// deletes the row from DepartmentAssignments that matches the id AssignmentID given by the user
         /// </summary>
         /// <param name="AssignmentID">ID and primary key in the DepartmentAssignment Table</param>
@@ -123,7 +105,9 @@ namespace IBSApplicationExercise1.Controllers
             {
                 return NotFound();
             }
+
             var departmentAssignment = await _context.DepartmentAssignments.FindAsync(AssignmentID);
+
             if (departmentAssignment == null)
             {
                 return NotFound();
@@ -133,18 +117,6 @@ namespace IBSApplicationExercise1.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-        #endregion
-
-        #region Helper method for checking if a department exists
-        /// <summary>
-        /// Checks if the assignmentID exists in the DepartmentAssignment Table
-        /// </summary>
-        /// <param name="AssignmentID">ID and primary key in the DepartmentAssignment Table</param>
-        /// <returns></returns>
-        private bool DepartmentAssignmentExists(Guid AssignmentID)
-        {
-            return (_context.DepartmentAssignments?.Any(e => e.AssignmentId == AssignmentID)).GetValueOrDefault();
         }
         #endregion
     }
