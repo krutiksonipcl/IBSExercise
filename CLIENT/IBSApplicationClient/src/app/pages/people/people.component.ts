@@ -24,6 +24,9 @@ export class PeopleComponent {
     this.validateEmail = this.validateEmail.bind(this);
   }
 
+  /**
+   * Initializes the People datasource with load, remove, update and insert methods
+   */
   ngOnInit(): void {
     this.peopleDataSource = new DataSource({
       store: new CustomStore({
@@ -54,13 +57,13 @@ export class PeopleComponent {
   //#region validation
 
   /**
-   * Validator for email
-   * @param e 
-   * @returns 
+   * Validator for email to prevent duplicate emails
+   * @param e event object containing the row that has been edited or added
+   * @returns true if the number of matches found is 0 false if the number of matches found is more then 1
    */
   public validateEmail(e: any) : boolean {
     const matches = this.peopleDataSource?.items().filter((x) => x.email === e.value && x.peopleId !== e.data.peopleId);
     return (matches?.length ?? 0) == 0 ;
   }
-
+  //#endregion validation
 }

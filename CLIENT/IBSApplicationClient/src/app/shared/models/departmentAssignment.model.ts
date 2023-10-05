@@ -1,5 +1,5 @@
 export class DepartmentAssignment{
-    id: any
+    assignmentId: any
     peopleId: any
     departmentId: any
     departmentName!: any

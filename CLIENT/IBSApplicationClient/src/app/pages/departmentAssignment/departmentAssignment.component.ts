@@ -5,6 +5,7 @@ import { Department } from 'src/app/shared/models/department.model';
 import { People } from 'src/app/shared/models/people.model';
 import DataSource from 'devextreme/data/data_source';
 import CustomStore from 'devextreme/data/custom_store';
+import { DepartmentService } from 'src/app/department.service';
 
 @Component({
   templateUrl: 'departmentAssignment.component.html',
@@ -12,15 +13,24 @@ import CustomStore from 'devextreme/data/custom_store';
 
 
 export class departmentAssignmentComponent {
-  constructor(private departmentAssignmentService: DepartmentAssignmentService) {}
+  //# region init
+  constructor(private departmentAssignmentService: DepartmentAssignmentService, private departmentService: DepartmentService) {}
+  //#endregion
+
+  //# region properties
 
   public departmentAssignmentSource: DataSource | null = null;
-  public departmentDataSource = {};
-  public activePeopleDataSource = {};
+  departmentDataSource: Department[] = [];
+  activePeopleDataSource: People[] = [];
 
+  //#endregion
 
-  departmentName: string[] = []
-
+  //#region public methods
+  /**
+   * Initializes a custom departmentAssignment datasource with load, remove and insert methods. 
+   * Initializes the Department datasource 
+   * Initializes the People datasource
+   */
   ngOnInit(): void {
     this.departmentAssignmentSource = new DataSource({
       store: new CustomStore({
@@ -28,7 +38,7 @@ export class departmentAssignmentComponent {
           return await this.departmentAssignmentService.getDepartmentAssignment();
         },
         remove: async (departmentAssignment: DepartmentAssignment) => {
-          return await this.departmentAssignmentService.deleteDepartmentAssignment(departmentAssignment.departmentId)
+          return await this.departmentAssignmentService.deleteDepartmentAssignment(departmentAssignment.assignmentId)
         },
         insert: async(departmentAssignment: DepartmentAssignment) => {
           const inserted = await this.departmentAssignmentService.insertDepartmentAssignment(departmentAssignment)
@@ -41,23 +51,27 @@ export class departmentAssignmentComponent {
       })
     });
 
-    this.departmentDataSource = new DataSource({
-      store: new CustomStore({
-        load: async () => {
-          return await this.departmentAssignmentService.getDepartment();
-        }
-      })
-    });
-
-    this.activePeopleDataSource = new DataSource({
-      store: new CustomStore({
-        load: async () => {
-          return await this.departmentAssignmentService.getActivePeople();
-        }
-      })
-    })
+    this.getDepartment();
+    this.getPeople();
   }
   
+  /**
+   * Populates departmentDataSource 
+   */
+  getDepartment() {
+    this.departmentAssignmentService.getDepartment()
+    .subscribe(departmentDataSource => {this.departmentDataSource = departmentDataSource;})
+  }
+
+  /**
+   * Populates peopleDataSource
+   */
+  getPeople() {
+    this.departmentAssignmentService.getPeople()
+    .subscribe(activePeopleDataSource => {this.activePeopleDataSource = activePeopleDataSource;})
+  }
+
+  //#endregion public methods
 }
 
 

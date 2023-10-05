@@ -39,10 +39,11 @@ namespace IBSApplicationExercise1.Controllers
           }
           if (!_context.DepartmentAssignments.Any())
             {
-            return NotFound();
-          }
+                return NotFound();
+            }
             return await _context.DepartmentAssignments.ToListAsync();
         }
+
 
         #endregion
 

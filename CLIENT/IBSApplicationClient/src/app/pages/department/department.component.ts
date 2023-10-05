@@ -12,18 +12,25 @@ import CustomStore from 'devextreme/data/custom_store';
 
 export class DepartmentComponent {
 
+  //# region properties
   @ViewChild(DxDataGridComponent) departmentGrid!: DxDataGridComponent;
 
   public departmentDataSoure: DataSource | null = null;
+  //#endregion properties
 
+
+  //# region init
   constructor(private departmentService:DepartmentService, private myhttp: HttpClient) {
     this.validateName = this.validateName.bind(this);
     this.validateAbbrName = this.validateAbbrName.bind(this);
   }
-  // department: Department[] = [];
-  // departmentURL:string= 'https://localhost:7022/api/Departments'
-  // isValid: boolean = false;
+  //#endregion init
 
+  //# region public methods
+
+  /**
+   * Initializes the departmentDataSource and its load, remove, update and insert methods
+   */
   ngOnInit(): void {
     this.departmentDataSoure = new DataSource({
       store: new CustomStore({
@@ -47,14 +54,28 @@ export class DepartmentComponent {
       })
     });
   }
+  //#endregion public methods
 
+  //# region validation
+  /**
+   * Validates the name the user provided to ensure it is unique
+   * @param e Is the event object containing the row that has been edited to be validated
+   * @returns True if the number of matches found is 0. False if the number of matches found is more then 0
+   */
   public validateName(e: any) : boolean {
     const matches = this.departmentDataSoure?.items().filter((x) => x.departmentName === e.value && x.departmentId !== e.data.departmentId);
     return (matches?.length ?? 0) == 0;
   }
 
+  /**
+   * Validates the abbreviated name the user provided to ensure it is unique
+   * @param e Is the event object containing the row that has been edited to be validated
+   * @returns True if the number of matches found is 0. False if the number of matches found is more then 0
+   */
   public validateAbbrName(e: any) : boolean {
     const matches = this.departmentDataSoure?.items().filter((x) => x.abbrDepartmentName === e.value && x.departmentId !== e.data.departmentId);
     return (matches?.length ?? 0) == 0;
   }
+  //#endregion validation
+
 }

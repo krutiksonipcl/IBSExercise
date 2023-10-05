@@ -118,6 +118,7 @@ namespace IBSApplicationExercise1.Controllers
         /// used to delete rows in the Department table by using the Department
         /// </summary>
         /// <param name="DepartmentID">id used to delete that department/row from the table</param>
+        /// validates if person is assigned to a department and returns Conflic (code 409) to indicate removal was not possible
         /// <returns></returns>
         [HttpDelete("{DepartmentID}")]
         public async Task<IActionResult> DeleteDepartment(Guid DepartmentID)
@@ -132,10 +133,18 @@ namespace IBSApplicationExercise1.Controllers
                 return NotFound();
             }
 
-            _context.Departments.Remove(department);
-            await _context.SaveChangesAsync();
+            var peopleExists = await _context.DepartmentAssignments.FirstOrDefaultAsync(e => e.DepartmentId == DepartmentID);
 
-            return NoContent();
+            if (peopleExists == null)
+            {
+                _context.Departments.Remove(department);
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            else
+            {
+                return Conflict();
+            }       
         }
         #endregion
     }

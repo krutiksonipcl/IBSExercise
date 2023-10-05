@@ -15,6 +15,7 @@ export class ReportingComponent {
     this.getReport();
   }
 
+  
   public async getReport() {
     await this.departmentAssignmentService.getDepartmentAssignment();
   }
