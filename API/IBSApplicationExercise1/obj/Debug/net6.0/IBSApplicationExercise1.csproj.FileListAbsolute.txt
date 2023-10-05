@@ -784,3 +784,5 @@ C:\PCL.Dev\IBSApplication\API\IBSApplicationExercise1\bin\Debug\net6.0\IBSApplic
 C:\PCL.Dev\IBSApplication\API\IBSApplicationExercise1\bin\Debug\net6.0\IBSApplicationExercise1.pdb
 C:\PCL.Dev\IBSApplication\API\IBSApplicationExercise1\obj\Debug\net6.0\IBSApplicationExercise1.genruntimeconfig.cache
 C:\PCL.Dev\IBSApplication\API\IBSApplicationExercise1\obj\Debug\net6.0\ref\IBSApplicationExercise1.dll
+C:\PCL.Dev\IBSApplication\API\IBSApplicationExercise1\bin\Debug\net6.0\AutoMapper.dll
+C:\PCL.Dev\IBSApplication\API\IBSApplicationExercise1\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

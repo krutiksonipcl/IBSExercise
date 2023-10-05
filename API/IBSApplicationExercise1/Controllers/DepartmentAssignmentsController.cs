@@ -76,8 +76,6 @@ namespace IBSApplicationExercise1.Controllers
                 DepartmentId = department.DepartmentId,
                 PersonId = people.PersonId,
                 DepartmentName = department.DepartmentName,
-                FirstName = people.FirstName,
-                LastName = people.LastName,
                 Email = people.Email,
                 CreatedBy = "Krutik Soni",
                 ModifiedBy = "Krutik Soni"

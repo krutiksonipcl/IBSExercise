@@ -9,7 +9,10 @@ namespace IBSApplicationExercise1.Models
 {
     public partial class IBSApplicationExerciseContext : DbContext
     {
-        
+        public IBSApplicationExerciseContext()
+        {
+        }
+
         public IBSApplicationExerciseContext(DbContextOptions<IBSApplicationExerciseContext> options)
             : base(options)
         {

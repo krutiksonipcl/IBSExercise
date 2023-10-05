@@ -4,7 +4,6 @@ using IBSApplicationExercise1.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddTransient<DepartmentService>();
 builder.Services.AddControllers();

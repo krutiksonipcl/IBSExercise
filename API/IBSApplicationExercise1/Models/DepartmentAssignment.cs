@@ -27,14 +27,6 @@ namespace IBSApplicationExercise1.Models
         [StringLength(50)]
         [Unicode(false)]
         public string Email { get; set; }
-        [Column("firstName")]
-        [StringLength(50)]
-        [Unicode(false)]
-        public string FirstName { get; set; }
-        [Column("lastName")]
-        [StringLength(50)]
-        [Unicode(false)]
-        public string LastName { get; set; }
         [Column("createdBy")]
         [StringLength(100)]
         [Unicode(false)]
