@@ -62,6 +62,9 @@ export class PeopleComponent {
    * @returns true if the number of matches found is 0 false if the number of matches found is more then 1
    */
   public validateEmail(e: any) : boolean {
+    if (this.peopleDataSource?.items()[0] == undefined){
+      return true
+    }
     const matches = this.peopleDataSource?.items().filter((x) => x.email === e.value && x.peopleId !== e.data.peopleId);
     return (matches?.length ?? 0) == 0 ;
   }

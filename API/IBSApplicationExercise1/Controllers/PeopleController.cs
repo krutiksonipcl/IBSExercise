@@ -116,7 +116,6 @@ namespace IBSApplicationExercise1.Controllers
                 newPerson.Active = true;
             }
 
-
             var addPerson = new Person()
             {   
                 Active = newPerson.Active, 

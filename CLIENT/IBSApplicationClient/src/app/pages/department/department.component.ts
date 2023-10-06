@@ -15,7 +15,7 @@ export class DepartmentComponent {
   //# region properties
   @ViewChild(DxDataGridComponent) departmentGrid!: DxDataGridComponent;
 
-  public departmentDataSoure: DataSource | null = null;
+  public departmentDataSource: DataSource | null = null;
   //#endregion properties
 
 
@@ -32,7 +32,7 @@ export class DepartmentComponent {
    * Initializes the departmentDataSource and its load, remove, update and insert methods
    */
   ngOnInit(): void {
-    this.departmentDataSoure = new DataSource({
+    this.departmentDataSource = new DataSource({
       store: new CustomStore({
         load: async () => {
           return await this.departmentService.getDepartment();
@@ -63,7 +63,10 @@ export class DepartmentComponent {
    * @returns True if the number of matches found is 0. False if the number of matches found is more then 0
    */
   public validateName(e: any) : boolean {
-    const matches = this.departmentDataSoure?.items().filter((x) => x.departmentName === e.value && x.departmentId !== e.data.departmentId);
+    if (this.departmentDataSource?.items()[0] == undefined){
+      return true
+    }
+    const matches = this.departmentDataSource?.items().filter((x) => x.departmentName === e.value && x.departmentId !== e.data.departmentId);
     return (matches?.length ?? 0) == 0;
   }
 
@@ -73,7 +76,10 @@ export class DepartmentComponent {
    * @returns True if the number of matches found is 0. False if the number of matches found is more then 0
    */
   public validateAbbrName(e: any) : boolean {
-    const matches = this.departmentDataSoure?.items().filter((x) => x.abbrDepartmentName === e.value && x.departmentId !== e.data.departmentId);
+    if (this.departmentDataSource?.items()[0] == undefined){
+      return true
+    }
+    const matches = this.departmentDataSource?.items().filter((x) => x.abbrDepartmentName === e.value && x.departmentId !== e.data.departmentId);
     return (matches?.length ?? 0) == 0;
   }
   //#endregion validation

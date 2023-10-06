@@ -24,7 +24,6 @@ namespace IBSApplicationExercise1.Services
         {
             return await _context.Departments.Select(x => new DepartmentDTO
             {
-                DepartmentId = x.DepartmentId,
                 DepartmentName = x.DepartmentName,
                 AbbrDepartmentName = x.AbbrDepartmentName
             }).ToListAsync();
