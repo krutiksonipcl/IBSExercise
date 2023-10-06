@@ -7,7 +7,7 @@
    "IncludeConnectionString": true,
    "ModelNamespace": null,
    "OutputContextPath": "",
-   "OutputPath": "Models",
+   "OutputPath": "_generated",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "IBSApplicationExercise1",
    "Schemas": null,
@@ -26,6 +26,10 @@
       {
          "Name": "[dbo].[People]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportingView]",
+         "ObjectType": 3
       }
    ],
    "UiHint": "29j46158\\sqlexpress03.IBSApplicationExercise.dbo",

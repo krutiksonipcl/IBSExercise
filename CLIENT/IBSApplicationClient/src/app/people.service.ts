@@ -42,7 +42,7 @@ export class PeopleService {
    * @returns a promise of a people object
    */
   public async updatePerson(key: People, values: People): Promise<People | void> {
-    return await lastValueFrom(this.myhttp.put<People>(this.peopleUrl + "/" + key.personId, values))
+    return await lastValueFrom(this.myhttp.put<People>(this.peopleUrl + "/" + key.email, values))
       .catch((err: HttpErrorResponse) => this.displayError(err));
   }
 
@@ -60,8 +60,8 @@ export class PeopleService {
    * makes an http delete call to the people api to delete a specefic person
    * @param id id of the person to be deleted from the database
    */
-  public async deletePerson(id: string): Promise<void> {
-    await lastValueFrom(this.myhttp.delete<void>(this.peopleUrl + "/" + id, {observe: "response"}))
+  public async deletePerson(email: string): Promise<void> {
+    await lastValueFrom(this.myhttp.delete<void>(this.peopleUrl + "/" + email, {observe: "response"}))
       .catch((err: HttpErrorResponse) => this.displayError(err));
   }
 

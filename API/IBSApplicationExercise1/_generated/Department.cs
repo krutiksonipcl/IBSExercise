@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace IBSApplicationExercise1.Models
+namespace IBSApplicationExercise1._generated
 {
     [Table("Department")]
     [Index("DepartmentName", "AbbrDepartmentName", Name = "uqDepartmentNames", IsUnique = true)]

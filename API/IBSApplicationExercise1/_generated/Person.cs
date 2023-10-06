@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace IBSApplicationExercise1.Models
+namespace IBSApplicationExercise1._generated
 {
     [Index("Email", Name = "UQ__People__AB6E616436930FE2", IsUnique = true)]
     public partial class Person

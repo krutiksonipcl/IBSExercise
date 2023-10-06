@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace IBSApplicationExercise1.Models
+namespace IBSApplicationExercise1._generated
 {
     public partial class IBSApplicationExerciseContext : DbContext
     {
@@ -21,6 +21,7 @@ namespace IBSApplicationExercise1.Models
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<DepartmentAssignment> DepartmentAssignments { get; set; }
         public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<ReportingView> ReportingViews { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -69,6 +70,11 @@ namespace IBSApplicationExercise1.Models
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity<ReportingView>(entity =>
+            {
+                entity.ToView("ReportingView");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -34,7 +34,7 @@ export class PeopleComponent {
           return await this.PeopleService.getPeople();
         },
         remove: async (person: People) => {
-          await this.PeopleService.deletePerson(person.personId);
+          await this.PeopleService.deletePerson(person.email);
         },
         update: async(key: People, values: People) => {
           console.log(key, values);

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IBSApplicationExercise1.Models;
+using IBSApplicationExercise1._generated;
 
 namespace IBSApplicationExercise1.Controllers
 {
@@ -50,7 +51,6 @@ namespace IBSApplicationExercise1.Controllers
             {
                 return await _context.People.Select(x => new PeopleDTO
                 {
-                    PersonId = x.PersonId,
                     Email = x.Email,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
@@ -74,10 +74,10 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="PeopleID">id used to reference rows in the People table</param>
         /// <param name="people">model representing the People table</param>
         /// <returns></returns>
-        [HttpPut("{PeopleID}")]
-        public async Task<IActionResult> PutPeople(Guid PersonId, Person people)
+        [HttpPut("{Email}")]
+        public async Task<IActionResult> PutPeople(string Email, Person people)
         {
-            var found = await _context.People.FirstAsync(x => x.PersonId == people.PersonId);
+            var found = await _context.People.FirstAsync(x => x.Email == people.Email);
             if (found == null)
                 return NotFound();
 
@@ -104,7 +104,7 @@ namespace IBSApplicationExercise1.Controllers
         /// <param name="people"> the data from the front end to be set into the DepartmentAssignment table</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Person>> PostPeople(Person newPerson)
+        public async Task<ActionResult<PeopleDTO>> PostPeople(Person newPerson)
         {
             if (_context.People == null)
             {
@@ -146,20 +146,20 @@ namespace IBSApplicationExercise1.Controllers
         /// </summary>
         /// <param name="PeopleID">id used to delete that person/row from the table</param>
         /// <returns></returns>
-        [HttpDelete("{PeopleID}")]
-        public async Task<IActionResult> DeletePeople(Guid PeopleID)
+        [HttpDelete("{Email}")]
+        public async Task<IActionResult> DeletePeople(string Email)
         {
             if (_context.People == null)
             {
                 return NotFound();
             }
-            var people = await _context.People.FindAsync(PeopleID);
-            if (people == null)
+            var person = await _context.People.FirstOrDefaultAsync(p => p.Email == Email);
+            if (person == null)
             {
                 return NotFound();
             }
 
-            _context.People.Remove(people);
+            _context.People.Remove(person);
             await _context.SaveChangesAsync();
 
             return NoContent();

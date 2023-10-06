@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using IBSApplicationExercise1._generated;
 using IBSApplicationExercise1.Models;
 
 namespace IBSApplicationExercise1.Controllers

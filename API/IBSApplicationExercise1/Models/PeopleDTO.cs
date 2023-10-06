@@ -2,7 +2,6 @@
 {
     public class PeopleDTO
     {
-        public Guid PersonId { get; set; }
 
         public string Email { get; set; } = null!;
 

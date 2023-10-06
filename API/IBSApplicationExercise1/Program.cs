@@ -2,6 +2,7 @@ using IBSApplicationExercise1.Controllers;
 using IBSApplicationExercise1.Models;
 using IBSApplicationExercise1.Services;
 using Microsoft.EntityFrameworkCore;
+using IBSApplicationExercise1._generated;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
